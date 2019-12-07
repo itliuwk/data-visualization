@@ -3,9 +3,9 @@
         <div class="title">
             <img src="../assets/images/kuzhua.png" alt="">
             <div class="distpicker">
-                <v-distpicker  @province="province" @city="city" hide-area @area="area" :placeholders="{province: '全国', city: '市', area: '区'
-                }" :province="select.province" :city="select.city"></v-distpicker>
-                <p>查看</p>
+                <v-distpicker @province="province" @city="city" hide-area :placeholders="{province: '全国', city: '市' }"
+                              :province="select.province" :city="select.city"></v-distpicker>
+                <p @click="view">查看</p>
             </div>
         </div>
         <div class="content">
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="midden">
-                <Map></Map>
+                <Map :location="location"></Map>
                 <ImplementChart></ImplementChart>
                 <ExchangeChart></ExchangeChart>
             </div>
@@ -60,12 +60,16 @@
 
     import VDistpicker from 'v-distpicker'
 
+    import axios from 'axios'
+    import Alert from '@/utils/message'
+
     export default {
         name: "index",
         data() {
             return {
                 msg: "index",
-                select: { province: '广东省', city: '广州市' },
+                select: {province: '广东省', city: '广州市'},
+                location: [],
             }
         },
         components: {
@@ -86,14 +90,38 @@
         },
         methods: {
             province(data) {
-                console.log(data)
+                this.select = {
+                    ...this.select,
+                    province: data.value
+                }
             },
             city(data) {
-                console.log(data)
+                this.select = {
+                    ...this.select,
+                    city: data.value
+                }
             },
-            area(data) {
-                console.log(data)
-            },
+            view() {
+                if (this.select.province == '全国') {
+                    Alert.success('跳全国页面');
+                    return false;
+                }
+                let params = this.select.province + this.select.city;
+                if (!this.select.province || this.select.province == '全国') {
+                    Alert.fail('省份不能为空');
+                    return false;
+                }
+                if (!this.select.city || this.select.city == '市') {
+                    Alert.fail('城市不能为空');
+                    return false;
+                }
+                let key = '1f8ddea28992d3654dda2d03a9367dcb'
+                axios.get('http://restapi.amap.com/v3/geocode/geo?address=' + params + '&output=JSON&key=' + key).then(res => {
+
+                    this.location = res.data.geocodes[0].location.split(',');
+
+                })
+            }
         }
     }
 

@@ -1,6 +1,8 @@
 <template>
     <div class="map-content">
-        <div id="container" class="map" tabindex="0"></div>
+        <div v-loading="loading"  element-loading-background="rgba(0, 0, 0, 0.8)">
+            <div id="container" class="map" tabindex="0"></div>
+        </div>
     </div>
 </template>
 
@@ -14,6 +16,18 @@
                 points: [],
                 map: null,
                 infoWindow: null,
+                loading: false
+            }
+        },
+        props: {
+            location: {
+                type: Array
+            }
+        },
+        watch: {
+            location() {
+                this.loading = true;
+                this.init();
             }
         },
         mounted() {
@@ -21,11 +35,21 @@
         },
         methods: {
             init() {
-                this.map = new AMap.Map("container", {
-                    resizeEnable: true,
-                    center: [113.270692, 23.136104],
-                    zoom: 10
-                });
+                let obj = {}
+                if (this.location.length) {
+                    obj = {
+                        resizeEnable: true,
+                        center: this.location,
+                        zoom: 10
+                    }
+                } else {
+                    obj = {
+                        resizeEnable: true,
+                        zoom: 10
+                    }
+                }
+                this.map = new AMap.Map("container", obj);
+                this.loading = false;
                 this.points = [
                     {"lnglat": ["113.864691", "22.942327"]}, {"lnglat": ["113.370643", "22.938827"]}, {"lnglat": ["112.985037", "23.15046"]}
                 ];
