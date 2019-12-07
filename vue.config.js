@@ -8,5 +8,9 @@ module.exports = {
                 // data: `@import "@/styles/global.scss";`
             }
         }
+    },
+    devServer:{
+        open: true,
+        port:9099
     }
-}
+};

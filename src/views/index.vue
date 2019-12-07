@@ -15,7 +15,11 @@
                     <Community></Community>
                 </div>
             </div>
-            <div class="midden">2</div>
+            <div class="midden">
+                <Map></Map>
+                <ImplementChart></ImplementChart>
+                <ExchangeChart></ExchangeChart>
+            </div>
             <div class="right">
                 <div class="distribution">
                     <Distribution></Distribution>
@@ -39,6 +43,11 @@
     import PieChart from './leftConponents/pieChart'
     import Community from './leftConponents/community'
 
+
+    import Map from './map/index'
+    import ImplementChart from './map/implementChart'
+    import ExchangeChart from './map/exchangeChart'
+
     import Distribution from './rightConponents/distribution'
     import Monitor from './rightConponents/monitor'
     import Conversion from './rightConponents/conversion'
@@ -58,7 +67,10 @@
             Distribution,
             Monitor,
             Conversion,
-            Statistics
+            Statistics,
+            Map,
+            ImplementChart,
+            ExchangeChart,
         },
         mounted() {
 
