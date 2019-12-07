@@ -78,8 +78,9 @@
 
             > div {
                 flex: 1;
-                border: 1px solid rgba(255, 255, 255, 1);
-
+                border-left: 1px solid rgba(255, 255, 255, 1);
+                border-top: 1px solid rgba(255, 255, 255, 1);
+                border-bottom: 1px solid rgba(255, 255, 255, 1);
                 p {
                     margin: 5px 0;
                 }
@@ -87,7 +88,11 @@
                 p:nth-child(2) {
                     border-top: 1px solid rgba(255, 255, 255, 1);
                     color: rgba(255, 212, 0, 1);
+                    padding-top: 5px;
                 }
+            }
+            >div:last-child{
+                border-right: 1px solid rgba(255, 255, 255, 1);
             }
         }
 

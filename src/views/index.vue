@@ -136,7 +136,7 @@
                 }
 
                 .distribution {
-                    min-height: 250px;
+                    min-height: 220px;
                 }
 
                 .monitor {
@@ -144,11 +144,15 @@
                 }
 
                 .conversion {
-                    min-height: 140px;
+                    height: 170px;
                 }
 
                 .statistics {
-                    height: calc(100% - 665px);
+                    height: calc(100% - 645px);
+                }
+
+                > div:nth-child {
+                    margin: 0;
                 }
             }
         }
