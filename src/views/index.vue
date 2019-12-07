@@ -1,7 +1,12 @@
 <template>
     <div class="page">
         <div class="title">
-            酷抓
+            <img src="../assets/images/kuzhua.png" alt="">
+            <div class="distpicker">
+                <v-distpicker  @province="province" @city="city" hide-area @area="area" :placeholders="{province: '全国', city: '市', area: '区'
+                }" :province="select.province" :city="select.city"></v-distpicker>
+                <p>查看</p>
+            </div>
         </div>
         <div class="content">
             <div class="left">
@@ -53,11 +58,14 @@
     import Conversion from './rightConponents/conversion'
     import Statistics from './rightConponents/statistics'
 
+    import VDistpicker from 'v-distpicker'
+
     export default {
         name: "index",
         data() {
             return {
-                msg: "index"
+                msg: "index",
+                select: { province: '广东省', city: '广州市' },
             }
         },
         components: {
@@ -71,11 +79,22 @@
             Map,
             ImplementChart,
             ExchangeChart,
+            VDistpicker
         },
         mounted() {
 
         },
-        methods: {}
+        methods: {
+            province(data) {
+                console.log(data)
+            },
+            city(data) {
+                console.log(data)
+            },
+            area(data) {
+                console.log(data)
+            },
+        }
     }
 
 </script>
@@ -88,10 +107,36 @@
 
         .title {
             height: 60px;
-            text-align: center;
-            line-height: 60px;
             font-size: 30px;
+            text-align: center;
             color: #fff;
+            position: relative;
+
+            img {
+                height: 70px;
+            }
+
+            .distpicker {
+                position: absolute;
+                top: 18px;
+                right: 20px;
+                display: inline-block;
+
+                /deep/ .distpicker-address-wrapper {
+                    display: inline-block;
+                }
+
+                p {
+                    font-size: 15px;
+                    display: inline-block;
+                    cursor: pointer;
+                    padding: 10px 20px;
+                    text-align: center;
+                    background: #2F3571;
+                    border-radius: 4px;
+                    margin: 0 10px;
+                }
+            }
         }
 
         .content {

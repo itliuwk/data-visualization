@@ -30,6 +30,9 @@
                     {"lnglat": ["113.864691", "22.942327"]}, {"lnglat": ["113.370643", "22.938827"]}, {"lnglat": ["112.985037", "23.15046"]}
                 ];
 
+                this.map.setMapStyle('amap://styles/blue');//  设置地图背景色
+                // https://lbs.amap.com/api/javascript-api/example/personalized-map/set-theme-style
+
                 for (var i = 0; i < this.points.length; i += 1) {
 
                     this.markers.push(new AMap.Marker({
@@ -49,8 +52,6 @@
                 new AMap.MarkerClusterer(this.map, this.markers, {
                     gridSize: 80,
                 });
-
-
 
 
                 //实例化信息窗体
