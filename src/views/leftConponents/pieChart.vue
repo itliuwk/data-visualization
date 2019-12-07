@@ -37,7 +37,10 @@
                         bottom: 0,
                         width: 340,
                         left: 30,
-                        data: ['干垃圾', '湿垃圾', '有害垃圾', '可回收垃圾']
+                        data: ['干垃圾', '湿垃圾', '有害垃圾', '可回收垃圾'],
+                        textStyle: {
+                            color: '#fff'
+                        }
                     },
                     series: [
                         {
@@ -104,6 +107,11 @@
             background: rgba(255, 208, 20, 1);
             border-radius: 8px;
             margin: 0 10px;
+        }
+
+        p:hover {
+            background: rgba(255, 208, 20, .85);
+            transition-duration: .5s;
         }
     }
 </style>

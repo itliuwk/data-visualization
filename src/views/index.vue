@@ -93,7 +93,7 @@
             }
 
             > div:nth-child(1) {
-                flex: 1;
+                flex: 1.2;
             }
 
             > div:nth-child(2) {
@@ -136,7 +136,7 @@
                 }
 
                 .distribution {
-                    min-height: 270px;
+                    min-height: 250px;
                 }
 
                 .monitor {

@@ -49,7 +49,11 @@
         data() {
             return {
                 msg: "partake",
-                partake: {}
+                partake: {
+                    partake:{},
+                    putIn:{},
+                    order:{},
+                }
             }
         },
         mounted() {
