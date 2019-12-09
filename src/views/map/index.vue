@@ -1,23 +1,52 @@
 <template>
-    <div class="map-content">
-        <div v-loading="loading"  element-loading-background="rgba(0, 0, 0, 0.8)">
-            <div id="container" class="map" tabindex="0"></div>
-        </div>
+    <div class="amap-page-container">
+        <el-amap
+                vid="amapDemo"
+                :center="center"
+                :zoom="zoom"
+                class="amap-demo">
+            <el-amap-marker v-for="marker in markers" :position="marker.position"
+                            :events="marker.events"></el-amap-marker>
+            <el-amap-info-window v-if="window" :position="window.position" :visible="window.visible" :id="window.id">
+                <div style="width: 284px">
+                    <p class="title"><span>{{detail.name}}</span><span>业主人数：{{detail.num}}</span></p>
+                    <div class="info">
+                        <img :src="detail.img" alt="">
+                        <div class="address">
+                            <p>地址：{{detail.address}}</p>
+                            <p>
+                                <span style="padding-right: 20px">垃圾桶：{{detail.a}}台</span>
+                                <span>取货机：{{detail.b}}台</span>
+                            </p>
+                        </div>
+                        <p class="to_detail" @click="toDetail(detail)">社区详情</p>
+                    </div>
+                </div>
+            </el-amap-info-window>
+        </el-amap>
     </div>
 </template>
 
+
 <script>
     export default {
-        name: "index",
-        data() {
+        data: function () {
             return {
-                msg: "index",
+                zoom: 10,
+                center: [113.264434, 23.129162],
                 markers: [],
-                points: [],
-                map: null,
-                infoWindow: null,
-                loading: false
-            }
+                windows: [],
+                window: '',
+                detail: {
+                    name: '番禺小区',
+                    num: 1000,
+                    address: "广东省广州市番禺区市桥红 袋鼠路新华街水泥砖小区7街901",
+                    a: 10,
+                    b: 8,
+                    img: 'https://cdn.renqilai.com/2019_12_09/11_12_03_xiaoqu.png'
+
+                }
+            };
         },
         props: {
             location: {
@@ -27,213 +56,132 @@
         watch: {
             location() {
                 this.loading = true;
+                this.center = this.location;
                 this.init();
+
             }
         },
-        mounted() {
+        created() {
             this.init();
+        },
+        mounted() {
+
         },
         methods: {
             init() {
-                let obj = {}
-                if (this.location.length) {
-                    obj = {
-                        resizeEnable: true,
-                        center: this.location,
-                        zoom: 10
+                let markers = [];
+                let windows = [];
+
+                let self = this;
+                let points = [
+                    {
+                        id: 1,
+                        lnglat: [113.317361, 23.083454]
+                    },
+                    {
+                        id: 2,
+                        lnglat: [113.406473, 23.185547]
+                    },
+                    {
+                        id: 3,
+                        lnglat: [113.367379, 22.987006]
                     }
-                } else {
-                    obj = {
-                        resizeEnable: true,
-                        zoom: 10
-                    }
-                }
-                this.map = new AMap.Map("container", obj);
-                this.loading = false;
-                this.points = [
-                    {"lnglat": ["113.864691", "22.942327"]}, {"lnglat": ["113.370643", "22.938827"]}, {"lnglat": ["112.985037", "23.15046"]}
                 ];
 
-                this.map.setMapStyle('amap://styles/blue');//  设置地图背景色
-                // https://lbs.amap.com/api/javascript-api/example/personalized-map/set-theme-style
+                for (let i = 0; i < points.length; i++) {
+                    markers.push({
+                        position: points[i].lnglat,
+                        events: {
+                            click() {
+                                self.windows.forEach(window => {
+                                    window.visible = false;
+                                });
 
-                for (var i = 0; i < this.points.length; i += 1) {
+                                self.window = self.windows[i];
+                                self.$nextTick(() => {
+                                    self.window.visible = true;
+                                });
+                            }
+                        }
+                    });
 
-                    this.markers.push(new AMap.Marker({
-                        position: this.points[i]['lnglat'],
-                        offset: new AMap.Pixel(-15, -15)
-                    }))
-
-
-                    // // 给标记加一个点击事件，传入对应的参数
-                    // this.markers.on('click', function (e) {
-                    //     console.log(e);
-                    // });
+                    windows.push({
+                        position: points[i].lnglat,
+                        visible: false,
+                        id: points[i].id
+                    });
                 }
 
-
-                //  初始化
-                new AMap.MarkerClusterer(this.map, this.markers, {
-                    gridSize: 80,
-                });
-
-
-                //实例化信息窗体
-                let title = '方恒假日酒店<span style="font-size:11px;color:#F00;">价格:318</span>',
-                    content = [];
-                content.push("<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：北京市朝阳区阜通东大街6号院3号楼东北8.3公里");
-                content.push("电话：010-64733333");
-                content.push("<a href='https://ditu.amap.com/detail/B000A8URXB?citycode=110105'>详细信息</a>");
-
-                this.infoWindow = new AMap.InfoWindow({
-                    isCustom: true,  //使用自定义窗体
-                    content: this.createInfoWindow(title, content.join("<br/>")),
-                    offset: new AMap.Pixel(16, -45)
-                });
+                this.markers = markers;
+                this.windows = windows;
             },
-            currMark(el) {
-                let marker = el.getAttribute('data-info').split(',');
-
-                let obj = {
-                    P: parseFloat(marker[1]),
-                    Q: parseFloat(marker[0]),
-                    lat: parseFloat(marker[1]),
-                    lng: parseFloat(marker[0]),
-                };
-                //  打开信息窗体
-                this.infoWindow.open(this.map, obj);
-            },
-            createInfoWindow(title, content) {
-                let info = document.createElement("div");
-                info.className = "custom-info input-card content-window-card";
-
-                //可以通过下面的方式修改自定义窗体的宽高
-                //info.style.width = "400px";
-                // 定义顶部标题
-                let top = document.createElement("div");
-                let titleD = document.createElement("div");
-                let closeX = document.createElement("img");
-                top.className = "info-top";
-                titleD.innerHTML = title;
-                closeX.src = "https://webapi.amap.com/images/close2.gif";
-                closeX.onclick = this.closeInfoWindow();
-
-                top.appendChild(titleD);
-                top.appendChild(closeX);
-                info.appendChild(top);
-
-                // 定义中部内容
-                let middle = document.createElement("div");
-                middle.className = "info-middle";
-                middle.style.backgroundColor = 'white';
-                middle.innerHTML = content;
-                info.appendChild(middle);
-
-                // 定义底部内容
-                let bottom = document.createElement("div");
-                bottom.className = "info-bottom";
-                bottom.style.position = 'relative';
-                bottom.style.top = '0px';
-                bottom.style.margin = '0 auto';
-                let sharp = document.createElement("img");
-                sharp.src = "https://webapi.amap.com/images/sharp.png";
-                bottom.appendChild(sharp);
-                info.appendChild(bottom);
-                return info;
-            },
-            closeInfoWindow() {
-                this.map.clearInfoWindow();
+            toDetail(id) {
+                console.log(id);
             }
         }
-    }
-
+    };
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-
-    #container {
-        width: 100%;
+    .amap-demo {
         height: 320px;
     }
 
-
-    .input-card .btn:last-child {
-        margin-right: 0;
-    }
-
-    .content-window-card {
-        position: relative;
-        box-shadow: none;
-        bottom: 0;
-        left: 0;
-        width: auto;
-        padding: 0;
-    }
-
-    .content-window-card p {
-        height: 2rem;
-    }
-
-    .custom-info {
-        border: solid 1px silver;
-    }
-
-    div.info-top {
-        position: relative;
-        background: none repeat scroll 0 0 #F9F9F9;
-        border-bottom: 1px solid #CCC;
-        border-radius: 5px 5px 0 0;
-    }
-
-    div.info-top div {
-        display: inline-block;
-        color: #333333;
-        font-size: 14px;
-        font-weight: bold;
-        line-height: 31px;
-        padding: 0 10px;
-    }
-
-    div.info-top img {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        transition-duration: 0.25s;
-    }
-
-    div.info-top img:hover {
-        box-shadow: 0px 0px 5px #000;
-    }
-
-    div.info-middle {
-        font-size: 12px;
-        padding: 10px 6px;
-        line-height: 20px;
-    }
-
-    div.info-bottom {
-        height: 0px;
-        width: 100%;
-        clear: both;
+    /deep/ .prompt {
+        background: white;
+        width: 100px;
+        height: 200px;
         text-align: center;
-    }
-
-    div.info-bottom img {
-        position: relative;
-        z-index: 104;
-    }
-
-    span {
-        margin-left: 5px;
-        font-size: 11px;
-    }
-
-    .info-middle img {
-        float: left;
-        margin-right: 6px;
     }
 
     /deep/ .amap-logo, /deep/ .amap-copyright {
         display: none !important;
+    }
+
+    .title {
+        width: 100%;
+        color: #fff;
+        height: 32px;
+        line-height: 32px;
+        font-size: 14px;
+        background: rgba(92, 102, 252, 1);
+        opacity: 1;
+        border-radius: 8px 8px 0px 0px;
+
+        span:nth-child(1) {
+            padding: 0 20px 0 20px;
+        }
+    }
+
+    .info {
+        padding: 10px;
+
+        img {
+            display: inline-block;
+            width: 80px;
+            height: 60px;
+        }
+
+        .address {
+            width: 180px;
+            display: inline-block;
+            color: rgba(32, 32, 32, 1);
+            font-size: 10px;
+            padding-left: 10px;
+        }
+    }
+
+    .to_detail {
+        margin-top: 5px;
+        font-size: 12px;
+        text-align: center;
+        color: #188ae2;
+        cursor: pointer;
+    }
+
+    /deep/ .amap-info-outer {
+        box-shadow: none !important;
+        background: #fff;
+        padding: 0 !important;
     }
 </style>

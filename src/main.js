@@ -12,10 +12,27 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 import echarts from 'echarts'
 
+import AMap from 'vue-amap'
+
+Vue.use(AMap);
+
+// 初始化地图
+
+AMap.initAMapApiLoader({
+    // 高德的key
+
+    key: '1f8ddea28992d3654dda2d03a9367dcb',
+    // 插件集合
+    plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor']
+
+});
+
+
 Vue.prototype.$echarts = echarts
 import './style/index.css'
 
 import '../node_modules/echarts/map/js/province/guangdong.js' // 引入广东地图数据
+
 
 window._vm = new Vue({
     router,
