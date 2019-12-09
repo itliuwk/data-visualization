@@ -49,6 +49,8 @@
         </el-dialog>
 
 
+
+
     </div>
 </template>
 
@@ -69,6 +71,7 @@
 
     import All from './all/index'
 
+
     import VDistpicker from 'v-distpicker'
 
     import axios from 'axios'
@@ -81,7 +84,7 @@
                 msg: "index",
                 select: {province: '广东省', city: '广州市'},
                 location: [],
-                dialogVisible: false
+                dialogVisible: false,
             }
         },
         components: {

@@ -24,11 +24,22 @@
                 </div>
             </el-amap-info-window>
         </el-amap>
+
+        <el-dialog
+                top="20px"
+                :visible.sync="isDetail"
+                width="80%">
+            <detail v-if="isDetail"></detail>
+        </el-dialog>
+
+
     </div>
 </template>
 
 
 <script>
+    import Detail from '../detail/index'
+
     export default {
         data: function () {
             return {
@@ -45,7 +56,8 @@
                     b: 8,
                     img: 'https://cdn.renqilai.com/2019_12_09/11_12_03_xiaoqu.png'
 
-                }
+                },
+                isDetail: false
             };
         },
         props: {
@@ -61,6 +73,9 @@
                 this.init();
 
             }
+        },
+        components: {
+            Detail
         },
         created() {
             this.init();
@@ -117,7 +132,11 @@
                 this.windows = windows;
             },
             toDetail(id) {
+                this.isDetail = true;
                 console.log(id);
+            },
+            mapClick() {
+                alert(123)
             }
         }
     };
@@ -185,5 +204,18 @@
         background: #fff;
         padding: 0 !important;
         border-radius: 8px 8px 0px 0px !important;
+    }
+
+    /deep/ .el-dialog__body {
+        border: 10px solid #fff;
+        padding: 0;
+    }
+
+    /deep/ .el-dialog__header {
+        padding: 0;
+    }
+
+    /deep/ .el-dialog__headerbtn {
+        top: 10px;
     }
 </style>

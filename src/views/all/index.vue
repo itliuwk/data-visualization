@@ -152,6 +152,7 @@
 
                 this.map.on('click', (ev) => {
                     console.log(ev.name);
+                    alert(ev.name)
                 })
             },
 
