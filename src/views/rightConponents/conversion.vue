@@ -89,7 +89,7 @@
                 }
 
                 .conversionRate {
-                    font-size: 8px;
+                    font-size: 10px;
                     position: relative;
                     top: -20px;
                     left: 54px;
@@ -102,7 +102,7 @@
                         display: inline-block;
 
                         p {
-                            font-size: 8px;
+                            font-size: 10px;
                         }
                     }
 

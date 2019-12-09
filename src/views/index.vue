@@ -40,6 +40,15 @@
                 </div>
             </div>
         </div>
+
+        <el-dialog
+                top="20px"
+                :visible.sync="dialogVisible"
+                width="80%">
+            <all v-if="dialogVisible"></all>
+        </el-dialog>
+
+
     </div>
 </template>
 
@@ -58,6 +67,8 @@
     import Conversion from './rightConponents/conversion'
     import Statistics from './rightConponents/statistics'
 
+    import All from './all/index'
+
     import VDistpicker from 'v-distpicker'
 
     import axios from 'axios'
@@ -70,6 +81,7 @@
                 msg: "index",
                 select: {province: '广东省', city: '广州市'},
                 location: [],
+                dialogVisible: false
             }
         },
         components: {
@@ -83,7 +95,8 @@
             Map,
             ImplementChart,
             ExchangeChart,
-            VDistpicker
+            VDistpicker,
+            All
         },
         mounted() {
 
@@ -103,7 +116,7 @@
             },
             view() {
                 if (this.select.province == '全国') {
-                    Alert.success('跳全国页面');
+                    this.dialogVisible = true;
                     return false;
                 }
                 let params = this.select.province + this.select.city;
@@ -141,12 +154,13 @@
             position: relative;
 
             img {
-                height: 70px;
+                height: 60px;
+                margin-top: 10px;
             }
 
             .distpicker {
                 position: absolute;
-                top: 18px;
+                top: 20px;
                 right: 20px;
                 display: inline-block;
 
@@ -241,5 +255,14 @@
                 }
             }
         }
+    }
+
+    /deep/ .el-dialog__body {
+        border: 10px solid #fff;
+        padding: 0;
+    }
+
+    /deep/ .el-dialog__header {
+        padding: 0;
     }
 </style>

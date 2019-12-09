@@ -44,6 +44,7 @@
 </template>
 
 <script>
+    import {toThousands} from '@/utils/index'
     export default {
         name: "partake",
         data() {
@@ -63,17 +64,17 @@
             get_detail() {
                 let partake = {
                     partake: {
-                        num: this.toThousands(656351644),
+                        num: toThousands(656351644),
                         add: 515,
                         increase: 63
                     },
                     putIn: {
-                        num: this.toThousands(826351324),
+                        num: toThousands(826351324),
                         add: 45,
                         increase: 33
                     },
                     order: {
-                        num: this.toThousands(153592501),
+                        num: toThousands(153592501),
                         add: 123,
                         increase: 45
                     }
