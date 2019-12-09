@@ -34,31 +34,59 @@
                         :data="tableData"
                         style="width: 100%">
                     <el-table-column prop="name" label="垃圾箱设备信息"></el-table-column>
-                    <el-table-column prop="name" label="编号"></el-table-column>
-                    <el-table-column prop="name" label="垃圾箱类型"></el-table-column>
-                    <el-table-column prop="name" label="状态"></el-table-column>
-                    <el-table-column prop="name" label="满溢情况"></el-table-column>
-                    <el-table-column prop="name" label="经度"></el-table-column>
-                    <el-table-column prop="name" label="维度"></el-table-column>
-                    <el-table-column prop="name" label="桶内温度"></el-table-column>
-                    <el-table-column prop="name" label="联系人"></el-table-column>
-                    <el-table-column prop="name" label="联系人电话"></el-table-column>
+                    <el-table-column prop="id" label="编号"></el-table-column>
+                    <el-table-column prop="type" label="垃圾箱类型"></el-table-column>
+                    <el-table-column prop="state" label="状态"></el-table-column>
+                    <el-table-column prop="name" label="满溢情况">
+                        <template slot-scope="tableData">
+                            <span>未满溢</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="name" label="经度">
+                        <template slot-scope="tableData">
+                            <span>113.264434</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="name" label="维度">
+                        <template slot-scope="tableData">
+                            <span>23.129162</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="name" label="桶内温度">
+                        <template slot-scope="tableData">
+                            <span>29°</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="name" label="联系人">
+                        <template slot-scope="tableData">
+                            <span>刘伟坤</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="name" label="联系人电话">
+                        <template slot-scope="tableData">
+                            <span>13502520162</span>
+                        </template>
+                    </el-table-column>
                 </el-table>
             </div>
             <div style="margin-top: 20px;">
                 <h4>苦瓜小区垃圾箱报警记录</h4>
                 <el-table
-                        :data="tableData"
+                        :data="list"
                         style="width: 100%">
                     <el-table-column prop="name" label="报警信息"></el-table-column>
                     <el-table-column prop="date" label="报警时间"></el-table-column>
                     <el-table-column prop="date" label="接触时间"></el-table-column>
                     <el-table-column prop="name" label="报警等级">
-                        <template slot-scope="tableData">
+                        <template slot-scope="list">
                             <span class="level">紧急</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="name" label="报警状态"></el-table-column>
+                    <el-table-column prop="name" label="报警状态">
+                        <template slot-scope="list">
+                            <span>已解除</span>
+                        </template>
+                    </el-table-column>
                 </el-table>
             </div>
         </div>
@@ -87,22 +115,36 @@
                 },
 
                 tableData: [{
-                    date: '2016-05-02',
-                    name: '王小虎',
+                    id: '6526351616',
+                    name: '垃圾箱1',
+                    type:'干垃圾箱',
+                    state:'在线',
                     address: '上海市普陀区金沙江路 1518 弄'
                 }, {
+                    id: '5464564534',
                     date: '2016-05-04',
-                    name: '王小虎',
+                    name: '垃圾箱2',
                     address: '上海市普陀区金沙江路 1517 弄'
                 }, {
+                    id: '2345464234',
                     date: '2016-05-01',
-                    name: '王小虎',
+                    name: '垃圾箱3',
                     address: '上海市普陀区金沙江路 1519 弄'
                 }, {
+                    id: '3456546422',
                     date: '2016-05-03',
-                    name: '王小虎',
+                    name: '垃圾箱4',
                     address: '上海市普陀区金沙江路 1516 弄'
-                }]
+                }],
+                list:[
+                    {
+                        id: '6526351616',
+                        name: '垃圾箱11',
+                        date:'2019-12-9 18:40:58',
+                        type:'干垃圾箱',
+                        state:'在线'
+                    }
+                ]
             };
         },
         props: {
