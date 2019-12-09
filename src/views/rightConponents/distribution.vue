@@ -32,19 +32,20 @@
                     },
                     legend: {
                         data: ['垃圾箱', '取货机'],
-                        textStyle:{
-                            color:'#fff'
+                        textStyle: {
+                            color: '#fff'
                         }
                     },
                     grid: {
+                        top: '15%',
                         left: '5%',
                         right: '5%',
-                        bottom: '10%',
+                        bottom: '5%',
                         containLabel: true
                     },
                     xAxis: {
                         type: 'category',
-                        data: ['小区1', '小区2', '小区3', '小区4', '小区5', '小区6', '小区7', '小区8'],
+                        data: ['科慧花园', '广州亚运城', '万科幸福誉', '祈福黄金海岸', '南沙保利城', '瑞万璞悦里', '万科桃源里', '云溪四季'],
                         nameTextStyle: {
                             color: '#fff'
                         },
@@ -52,6 +53,12 @@
                             lineStyle: {
                                 color: '#fff'
                             }
+
+                        },
+                        axisLabel: {
+                            interval: 0,
+                            fontSize: 8,
+                            rotate: -30
                         }
 
                     },
@@ -71,7 +78,7 @@
                         {
                             name: '垃圾箱',
                             type: 'bar',
-                            data: [54, 12, 55, 167, 23,65,45,23],
+                            data: [54, 12, 55, 167, 23, 65, 45, 23],
                             itemStyle: {
                                 color: '#FFE711'
                             }
@@ -79,7 +86,7 @@
                         {
                             name: '取货机',
                             type: 'bar',
-                            data: [56, 43, 32, 87, 34,54,32,67],
+                            data: [56, 43, 32, 87, 34, 54, 32, 67],
                             itemStyle: {
                                 color: '#11D6FF'
                             }

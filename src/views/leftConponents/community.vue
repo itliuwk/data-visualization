@@ -24,56 +24,56 @@
                 msg: "community",
                 table: [
                     {
-                    name:'小区名称1',
-                    num:1000,
-                    quality:200,
-                    proportion:40
-                },{
-                    name:'小区名称1',
-                    num:1000,
-                    quality:200,
-                    proportion:40
-                },{
-                    name:'小区名称1',
-                    num:1000,
-                    quality:200,
-                    proportion:40
-                },{
-                    name:'小区名称1',
-                    num:1000,
-                    quality:200,
-                    proportion:40
-                },{
-                    name:'小区名称1',
-                    num:1000,
-                    quality:200,
-                    proportion:40
-                },{
-                    name:'小区名称1',
-                    num:1000,
-                    quality:200,
-                    proportion:40
-                },{
-                    name:'小区名称1',
-                    num:1000,
-                    quality:200,
-                    proportion:40
-                },{
-                    name:'小区名称1',
-                    num:1000,
-                    quality:200,
-                    proportion:40
-                },{
-                    name:'小区名称1',
-                    num:1000,
-                    quality:200,
-                    proportion:40
-                },{
-                    name:'小区名称1',
-                    num:1000,
-                    quality:200,
-                    proportion:40
-                },]
+                        name: '科慧花园',
+                        num: 654,
+                        quality: 234,
+                        proportion: 32
+                    }, {
+                        name: '广州亚运城',
+                        num: 654,
+                        quality: 345,
+                        proportion: 33
+                    }, {
+                        name: '万科幸福誉',
+                        num: 456,
+                        quality: 234,
+                        proportion: 74
+                    }, {
+                        name: '祈福黄金海岸',
+                        num: 575,
+                        quality: 234,
+                        proportion: 42
+                    }, {
+                        name: '南沙保利城',
+                        num: 456,
+                        quality: 907,
+                        proportion: 23
+                    }, {
+                        name: '瑞万璞悦里',
+                        num: 564,
+                        quality: 544,
+                        proportion: 63
+                    }, {
+                        name: '万科桃源里',
+                        num: 654,
+                        quality: 256,
+                        proportion: 13
+                    }, {
+                        name: '合景誉山国际',
+                        num: 416,
+                        quality: 214,
+                        proportion: 75
+                    }, {
+                        name: '云溪四季',
+                        num: 641,
+                        quality: 521,
+                        proportion: 25
+                    }, {
+                        name: '越秀滨海新城',
+                        num: 672,
+                        quality: 523,
+                        proportion: 56
+                    },]
             }
         },
         mounted() {

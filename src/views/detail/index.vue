@@ -70,7 +70,7 @@
                 </el-table>
             </div>
             <div style="margin-top: 20px;">
-                <h4>苦瓜小区垃圾箱报警记录</h4>
+                <h4>番禺小区垃圾箱报警记录</h4>
                 <el-table
                         :data="list"
                         style="width: 100%">
@@ -117,8 +117,8 @@
                 tableData: [{
                     id: '6526351616',
                     name: '垃圾箱1',
-                    type:'干垃圾箱',
-                    state:'在线',
+                    type: '干垃圾箱',
+                    state: '在线',
                     address: '上海市普陀区金沙江路 1518 弄'
                 }, {
                     id: '5464564534',
@@ -136,13 +136,13 @@
                     name: '垃圾箱4',
                     address: '上海市普陀区金沙江路 1516 弄'
                 }],
-                list:[
+                list: [
                     {
                         id: '6526351616',
-                        name: '垃圾箱11',
-                        date:'2019-12-9 18:40:58',
-                        type:'干垃圾箱',
-                        state:'在线'
+                        name: 'A016高温报警',
+                        date: '2019-12-9 18:40:58',
+                        type: '干垃圾箱',
+                        state: '在线'
                     }
                 ]
             };

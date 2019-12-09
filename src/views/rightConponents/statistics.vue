@@ -4,19 +4,19 @@
         <div class="table">
             <div>
                 <p>累计订单量</p>
-                <p>1000</p>
+                <p>6315</p>
             </div>
             <div>
                 <p>订单预算</p>
-                <p>1000</p>
+                <p>5661</p>
             </div>
             <div>
                 <p>成本</p>
-                <p>500</p>
+                <p>563</p>
             </div>
             <div>
                 <p>收益</p>
-                <p>5000</p>
+                <p>9632</p>
             </div>
         </div>
         <div class="info">
@@ -33,15 +33,15 @@
             <div>
                 <div>
                     <span>成交量最高小区：</span>
-                    <span>小区123</span>
+                    <span>越秀滨海新城</span>
                 </div>
                 <div style="margin: 10px 0">
                     <span>成交量最高商品：</span>
-                    <span>商品123</span>
+                    <span>泡面</span>
                 </div>
                 <div>
                     <span>搜索量最高商品：</span>
-                    <span>商品123</span>
+                    <span>情趣用品</span>
                 </div>
             </div>
         </div>

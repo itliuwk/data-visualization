@@ -12,16 +12,16 @@
                 <div class="conversionRate">
                     <div>
                         <p>下单转换率</p>
-                        <p>4.24%</p>
+                        <p>85.24%</p>
                     </div>
                     <div>
                         <p>付款转化率</p>
-                        <p>4.24%</p>
+                        <p>56.18%</p>
                     </div>
                 </div>
                 <div class="deal">
                     <p>成交转化率</p>
-                    <p>2.91%</p>
+                    <p>75.91%</p>
                 </div>
             </div>
         </div>
