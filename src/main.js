@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import {key} from './config'
 
 Vue.config.productionTip = false;
 
@@ -21,7 +22,7 @@ Vue.use(AMap);
 AMap.initAMapApiLoader({
     // 高德的key
 
-    key: '1f8ddea28992d3654dda2d03a9367dcb',
+    key,
     // 插件集合
     plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor']
 

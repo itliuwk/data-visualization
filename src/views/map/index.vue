@@ -174,7 +174,7 @@
     .to_detail {
         margin-top: 5px;
         font-size: 12px;
-        text-align: center;
+        text-align: right;
         color: #188ae2;
         cursor: pointer;
     }
@@ -183,5 +183,6 @@
         box-shadow: none !important;
         background: #fff;
         padding: 0 !important;
+        border-radius: 8px 8px 0px 0px !important;
     }
 </style>
