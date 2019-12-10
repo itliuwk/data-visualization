@@ -166,7 +166,7 @@
         .conversionRate {
             font-size: 10px;
             position: relative;
-            top: -103px;
+            top: -107px;
             left: -27px;
             color: #fff;
 
@@ -190,8 +190,8 @@
         .deal {
             position: relative;
             display: inline-block;
-            top: -103px;
-            left: 131px;
+            top: -87px;
+            left: 125px;
             color: #fff;
             font-size: 12px;
         }
