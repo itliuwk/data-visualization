@@ -5,9 +5,9 @@
             <img src="../../assets/images/funnel.png" alt="">
             <div>
                 <div class="info-text">
-                    <p>浏览</p>
-                    <p>下单</p>
-                    <p>付款</p>
+                    <span>浏览</span>
+                    <span>下单</span>
+                    <span>付款</span>
                 </div>
                 <div class="conversionRate">
                     <div>
@@ -24,6 +24,12 @@
                     <p>75.91%</p>
                 </div>
             </div>
+        </div>
+        <div class="use-info">
+            <p>累计使用积分</p>
+            <p>1000000</p>
+            <p>等价于：10000元</p>
+            <p>=10000KG垃圾</p>
         </div>
     </div>
 </template>
@@ -54,51 +60,58 @@
         }
 
         .info {
-            text-align: center;
             position: relative;
+            margin-top: 10px;
+            width: 50%;
+            display: inline-block;
+            vertical-align: middle;
 
             img {
-                width: 45%;
+                width: 90%;
             }
 
             > div {
                 position: absolute;
                 top: 0;
                 left: 0;
-                width: 100%;
-                height: 100%;
 
                 .info-text {
-                    p {
+                    display: inline-block;
+
+                    span {
                         position: relative;
-                        left: -43px;
+                        left: 55px;
+
                         font-size: 10px;
+                        color: #fff;
                     }
 
-                    p:nth-child(1) {
-                        top: 10px;
+                    span:nth-child(1) {
+                        top: -10px;
                     }
 
-                    p:nth-child(2) {
+                    span:nth-child(2) {
                         top: 30px;
+                        left: 32px;
                     }
 
-                    p:nth-child(3) {
-                        top: 50px;
+                    span:nth-child(3) {
+                        top: 65px;
+                        left: 10px;
                     }
                 }
 
                 .conversionRate {
                     font-size: 10px;
                     position: relative;
-                    top: -20px;
-                    left: 54px;
+                    top: 0;
+                    left: -18px;
                     display: inline-block;
 
                     div {
                         position: relative;
-                        top: -7px;
-                        left: 74px;
+                        top: 22px;
+                        left: 92px;
                         display: inline-block;
 
                         p {
@@ -107,19 +120,30 @@
                     }
 
                     div:nth-child(2) {
-                        top: 36px;
-                        left: -12px;
+                        top: 63px;
+                        left: 7px;
                     }
                 }
 
                 .deal {
                     position: relative;
                     display: inline-block;
-                    top: 0;
-                    left: 80px;
+                    top: 10px;
+                    left: 215px;
                 }
 
             }
+        }
+
+        .use-info {
+            margin-left: 50px;
+            color: #fff;
+            display: inline-block;
+            padding: 5px 20px;
+            background: #11d6ff;
+            border-radius: 8px;
+            vertical-align: middle;
+            text-align: center;
         }
     }
 </style>

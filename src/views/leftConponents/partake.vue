@@ -1,7 +1,7 @@
 <template>
     <div class="partake-content">
         <div>
-            <p>逐步环保投入参与人数</p>
+            <p>累计环保投入参与人数</p>
             <div class="num">
                 <template v-for="item in partake.partake.num">
                     <span :class="item!=','?'color':''"> {{item}}</span>
@@ -11,11 +11,11 @@
             </div>
             <div class="info">
                 <p>上月添加：{{partake.partake.add}} 人</p>
-                <p>每月增涨：{{partake.partake.increase}} %</p>
+                <p>环比增涨：{{partake.partake.increase}} %</p>
             </div>
         </div>
         <div style="margin: 15px 0">
-            <p>逐步垃圾分类投放质量</p>
+            <p>累计垃圾分类投放质量</p>
             <div class="num">
                 <template v-for="item in partake.putIn.num">
                     <span :class="item!=','?'color':''"> {{item}}</span>
@@ -24,7 +24,7 @@
             </div>
             <div class="info">
                 <p>上月添加：{{partake.putIn.add}} 人</p>
-                <p>每月增涨：{{partake.putIn.increase}} %</p>
+                <p>环比增涨：{{partake.putIn.increase}} %</p>
             </div>
         </div>
         <div>
@@ -37,7 +37,7 @@
             </div>
             <div class="info">
                 <p>上月添加：{{partake.order.add}} 人</p>
-                <p>每月增涨：{{partake.order.increase}} %</p>
+                <p>环比增涨：{{partake.order.increase}} %</p>
             </div>
         </div>
     </div>

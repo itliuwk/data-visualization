@@ -1,8 +1,8 @@
 <template>
     <div class="pieChart-content">
         <div class="btn">
-            <p>垃圾发布实时数据</p>
-            <p>垃圾投放扩展数据</p>
+            <p>垃圾投放实时数据</p>
+            <p>垃圾投放累计数据</p>
         </div>
         <div id="chartsBin"></div>
     </div>

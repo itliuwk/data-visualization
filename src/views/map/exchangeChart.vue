@@ -27,7 +27,7 @@
                         trigger: 'axis'
                     },
                     legend: {
-                        data: ['番禺', '天河', '海珠', '越秀', '荔湾'],
+                        data: ['总额', '成本', '积分抵扣额', '利润'],
                         textStyle: {
                             color: '#fff'
                         }
@@ -70,41 +70,43 @@
                     ],
                     series: [
                         {
-                            name: '番禺',
+                            name: '总额',
                             type: 'line',
                             stack: '总量',
                             areaStyle: {},
                             data: [120, 132, 101, 134, 90, 230, 210, 51, 65, 145, 651, 963],
+                            itemStyle: {
+                                color: '#11D6FF'
+                            }
                         },
                         {
-                            name: '天河',
+                            name: '成本',
                             type: 'line',
                             stack: '总量',
                             areaStyle: {},
                             data: [220, 182, 191, 234, 290, 330, 310, 96, 54, 69, 654, 98],
+                            itemStyle: {
+                                color: '#59DD01'
+                            }
                         },
                         {
-                            name: '海珠',
+                            name: '积分抵扣额',
                             type: 'line',
                             stack: '总量',
                             areaStyle: {},
-                            data: [150, 232, 201, 154, 190, 330, 410, 89, 125, 156, 654, 987]
-                        },
-                        {
-                            name: '越秀',
-                            type: 'line',
-                            stack: '总量',
-                            areaStyle: {normal: {}},
-                            data: [320, 332, 301, 334, 390, 330, 320, 652, 452, 321, 658, 125]
-                        },
-                        {
-                            name: '荔湾',
-                            type: 'line',
-                            stack: '总量',
-                            areaStyle: {normal: {}},
-                            data: [820, 932, 901, 934, 1290, 1330, 1320, 654, 669, 852, 1290, 1330,],
+                            data: [150, 232, 201, 154, 190, 330, 410, 89, 125, 156, 654, 987],
                             itemStyle: {
-                                color: '#FFE711'
+                                color: '#2A9F67'
+                            }
+                        },
+                        {
+                            name: '利润',
+                            type: 'line',
+                            stack: '总量',
+                            areaStyle: {normal: {}},
+                            data: [320, 332, 301, 334, 390, 330, 320, 652, 452, 321, 658, 125],
+                            itemStyle: {
+                                color: '#6F99C6'
                             }
                         }
                     ]
