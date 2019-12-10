@@ -1,8 +1,5 @@
 <template>
     <div class="all">
-        <div class="title">
-            <img src="../../assets/images/kuzhua.png" alt="">
-        </div>
         <div class="map">
             <div class="left">
                 <div class="user">
@@ -329,8 +326,9 @@
 <style rel="stylesheet/scss" lang="scss" scoped>
 
     .all {
-        background: linear-gradient(360deg, rgba(10, 32, 46, 1) 0%, rgba(1, 15, 106, 1) 100%);
-        height: 800px;
+        /*background: linear-gradient(360deg, rgba(10, 32, 46, 1) 0%, rgba(1, 15, 106, 1) 100%);*/
+        height: calc(100vh - 60px);
+        padding-top: 70px;
 
         .title {
             height: 60px;
@@ -345,7 +343,7 @@
 
     .map {
         display: flex;
-        height: calc(800 - 60px);
+        height: calc(100% - 60px);
 
         > div {
             flex: 1;

@@ -8,75 +8,28 @@
                 <p @click="view">查看</p>
             </div>
         </div>
-        <div class="content">
-            <div class="left">
-                <div class="partake">
-                    <Partake></Partake>
-                </div>
-                <div class="pie-chart">
-                    <PieChart></PieChart>
-                </div>
-                <div class="community">
-                    <Community></Community>
-                </div>
-            </div>
-            <div class="midden">
-                <Map :location="location"></Map>
-                <ImplementChart></ImplementChart>
-                <ExchangeChart></ExchangeChart>
-            </div>
-            <div class="right">
-                <div class="distribution">
-                    <Distribution></Distribution>
-                </div>
-                <div class="monitor">
-                    <Monitor></Monitor>
-                </div>
-                <div class="conversion">
-                    <Conversion></Conversion>
-                </div>
-                <div class="statistics">
-                    <Statistics></Statistics>
-                </div>
-            </div>
+
+        <div class="">
+            <City v-if="isCity" :location="location"></City>
+            <All v-else></All>
         </div>
-
-        <el-dialog
-                top="20px"
-                :visible.sync="dialogVisible"
-                width="80%">
-            <all v-if="dialogVisible"></all>
-        </el-dialog>
-
-
 
 
     </div>
 </template>
 
 <script>
-    import Partake from './leftConponents/partake'
-    import PieChart from './leftConponents/pieChart'
-    import Community from './leftConponents/community'
 
-
-    import Map from './map/index'
-    import ImplementChart from './map/implementChart'
-    import ExchangeChart from './map/exchangeChart'
-
-    import Distribution from './rightConponents/distribution'
-    import Monitor from './rightConponents/monitor'
-    import Conversion from './rightConponents/conversion'
-    import Statistics from './rightConponents/statistics'
 
     import All from './all/index'
+    import City from './city/index'
 
 
     import VDistpicker from 'v-distpicker'
 
     import axios from 'axios'
     import Alert from '@/utils/message'
-
+    import {key} from '../config'
     export default {
         name: "index",
         data() {
@@ -84,22 +37,14 @@
                 msg: "index",
                 select: {province: '广东省', city: '广州市'},
                 location: [],
-                dialogVisible: false,
+                isCity: true,
+                key:key
             }
         },
         components: {
-            Partake,
-            PieChart,
-            Community,
-            Distribution,
-            Monitor,
-            Conversion,
-            Statistics,
-            Map,
-            ImplementChart,
-            ExchangeChart,
             VDistpicker,
-            All
+            All,
+            City
         },
         mounted() {
 
@@ -119,9 +64,10 @@
             },
             view() {
                 if (this.select.province == '全国') {
-                    this.dialogVisible = true;
+                    this.isCity = false;
                     return false;
                 }
+
                 let params = this.select.province + this.select.city;
                 if (!this.select.province || this.select.province == '全国') {
                     Alert.fail('省份不能为空');
@@ -131,8 +77,8 @@
                     Alert.fail('城市不能为空');
                     return false;
                 }
-                let key = '1f8ddea28992d3654dda2d03a9367dcb'
-                axios.get('http://restapi.amap.com/v3/geocode/geo?address=' + params + '&output=JSON&key=' + key).then(res => {
+                this.isCity = true;
+                axios.get('http://restapi.amap.com/v3/geocode/geo?address=' + params + '&output=JSON&key=' + this.key).then(res => {
 
                     this.location = res.data.geocodes[0].location.split(',');
 
@@ -184,80 +130,7 @@
             }
         }
 
-        .content {
-            height: calc(100vh - 60px);
-            width: 100%;
-            display: flex;
-            padding: 20px;
 
-            > div {
-                flex: 1;
-            }
-
-            > div:nth-child(1) {
-                flex: 1.2;
-            }
-
-            > div:nth-child(2) {
-                flex: 3;
-                margin: 0 15px;
-            }
-
-            > div:nth-child(3) {
-                flex: 1.5;
-            }
-
-            .left {
-                > div {
-                    background: #2F3571;
-                    margin-bottom: 15px;
-                }
-
-                .partake {
-                    height: 305px;
-                }
-
-                .pie-chart {
-                    min-height: 235px;
-                }
-
-                .community {
-                    height: calc(100% - 570px);
-                }
-            }
-
-            .midden {
-                background: #2F3571;
-            }
-
-
-            .right {
-                > div {
-                    background: #2F3571;
-                    margin-bottom: 15px;
-                }
-
-                .distribution {
-                    min-height: 220px;
-                }
-
-                .monitor {
-                    min-height: 210px;
-                }
-
-                .conversion {
-                    height: 170px;
-                }
-
-                .statistics {
-                    height: calc(100% - 645px);
-                }
-
-                > div:nth-child {
-                    margin: 0;
-                }
-            }
-        }
     }
 
     /deep/ .el-dialog__body {
