@@ -117,6 +117,8 @@
                                 self.$nextTick(() => {
                                     self.window.visible = true;
                                 });
+
+                                console.log(1);
                             }
                         }
                     });
