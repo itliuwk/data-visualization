@@ -104,7 +104,7 @@
             return {};
         },
         mounted() {
-            this.loadMap();
+            this.loadMap1();
             this.putInPie();
             this.rankingLin();
             this.cityLin();
@@ -114,6 +114,14 @@
                 this.map = echarts.init(document.getElementById('map'));
 
                 this.map.setOption({
+                    dataRange: {
+                        show: false,
+                        x: 'left',
+                        y: 'bottom',
+                        splitList: [
+                            {start: 10, end: 10, color: '#ff6300'},//当值为10时，区域背景
+                        ],
+                    },
                     geo: {
                         // 必须要先引入了对应地图的js文件或者json文件，在这一步的时候，echarts会自动将对应的JS文件注入，地图才会显示.
                         map: 'china',
@@ -127,9 +135,7 @@
                             }
                         },
                         itemStyle: {
-                            normal: {
-                                borderColor: 'rgba(0, 0, 0, 0.8)'
-                            },
+
                             emphasis: {
                                 areaColor: '#75ADF9',
                                 shadowOffsetX: 0,
@@ -149,8 +155,61 @@
 
                 this.map.on('click', (ev) => {
                     console.log(ev.name);
-                    alert(ev.name)
-                })
+                });
+            },
+
+
+            loadMap1() {
+                let that = this;
+                this.map = echarts.init(document.getElementById('map'));
+                let data = [];
+                let option = {
+                    tooltip: {
+                        show: false, //不显示提示标签
+                        formatter: '{b}', //提示标签格式
+                        backgroundColor: "#ff7f50",//提示标签背景颜色
+                        textStyle: {color: "#fff"} //提示标签字体颜色
+                    },
+                    series: [{
+                        type: 'map',
+                        mapType: 'china',
+                        label: {
+                            normal: {
+                                show: true,//显示省份标签
+                                textStyle: {color: "#c71585"}//省份标签字体颜色
+                            },
+                            emphasis: {//对应的鼠标悬浮效果
+                                show: true,
+                                textStyle: {color: "#800080"}
+                            }
+                        },
+                        zoom: 1.1,
+                        roam: true,
+                        itemStyle: {
+                            normal: {
+                                borderWidth: .5,//区域边框宽度
+                                borderColor: '#009fe8',//区域边框颜色
+                                areaColor: "#fff",//区域颜色
+                            },
+                            emphasis: {
+                                borderWidth: .5,
+                                borderColor: '#4b0082',
+                                areaColor: "#6EA3EA",
+                            }
+                        },
+                        data: data
+                    }],
+                };
+                this.map.setOption(option);
+                this.map.on('click', function (params) {
+                    option.series[0].data = [
+                        {
+                            name: params.name, selected: true
+                        }
+                    ];
+                    that.map.setOption(option);
+                });
+
             },
 
             putInPie() {

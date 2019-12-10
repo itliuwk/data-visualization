@@ -37,7 +37,7 @@
                 msg: "index",
                 select: {province: '广东省', city: '广州市'},
                 location: [],
-                isCity: true,
+                isCity: false,
                 key:key
             }
         },
