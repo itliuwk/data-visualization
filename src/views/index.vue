@@ -30,6 +30,7 @@
     import axios from 'axios'
     import Alert from '@/utils/message'
     import {key} from '../config'
+
     export default {
         name: "index",
         data() {
@@ -37,8 +38,8 @@
                 msg: "index",
                 select: {province: '广东省', city: '广州市'},
                 location: [],
-                isCity: false,
-                key:key
+                isCity: true,
+                key: key
             }
         },
         components: {

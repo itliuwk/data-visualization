@@ -98,68 +98,20 @@
     import echarts from 'echarts';
     import china from 'echarts/map/js/china'
 
+    import Alert from '@/utils/message'
     export default {
         name: 'echart-map',
         data() {
             return {};
         },
         mounted() {
-            this.loadMap1();
+            this.loadMap();
             this.putInPie();
             this.rankingLin();
             this.cityLin();
         },
         methods: {
             loadMap() {
-                this.map = echarts.init(document.getElementById('map'));
-
-                this.map.setOption({
-                    dataRange: {
-                        show: false,
-                        x: 'left',
-                        y: 'bottom',
-                        splitList: [
-                            {start: 10, end: 10, color: '#ff6300'},//当值为10时，区域背景
-                        ],
-                    },
-                    geo: {
-                        // 必须要先引入了对应地图的js文件或者json文件，在这一步的时候，echarts会自动将对应的JS文件注入，地图才会显示.
-                        map: 'china',
-                        roam: true,//不开启缩放和平移
-                        zoom: 1,//视角缩放比例
-                        label: {
-                            normal: {
-                                show: true,
-                                fontSize: '10',
-                                color: '#666'
-                            }
-                        },
-                        itemStyle: {
-
-                            emphasis: {
-                                areaColor: '#75ADF9',
-                                shadowOffsetX: 0,
-                                shadowOffsetY: 0,
-                                shadowBlur: 20,
-                                borderWidth: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        },
-                        emphasis: {
-                            itemStyle: {
-                                areaColor: '#6EA3EA'
-                            }
-                        }
-                    }
-                });
-
-                this.map.on('click', (ev) => {
-                    console.log(ev.name);
-                });
-            },
-
-
-            loadMap1() {
                 let that = this;
                 this.map = echarts.init(document.getElementById('map'));
                 let data = [];
@@ -202,6 +154,7 @@
                 };
                 this.map.setOption(option);
                 this.map.on('click', function (params) {
+                    Alert.success(params.name)
                     option.series[0].data = [
                         {
                             name: params.name, selected: true
