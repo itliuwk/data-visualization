@@ -4,6 +4,7 @@
                 vid="amapDemo"
                 :center="center"
                 :zoom="zoom"
+                mapStyle=""
                 class="amap-demo">
             <el-amap-marker v-for="marker in markers" :position="marker.position"
                             :events="marker.events"></el-amap-marker>
@@ -117,8 +118,6 @@
                                 self.$nextTick(() => {
                                     self.window.visible = true;
                                 });
-
-                                console.log(1);
                             }
                         }
                     });

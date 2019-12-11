@@ -1,6 +1,8 @@
 
 module.exports = {
     // ...
+    // publicPath: '../v1',
+    // outputDir:'v1',
     css: {
         loaderOptions: {
             sass: {
@@ -9,6 +11,7 @@ module.exports = {
             }
         }
     },
+    productionSourceMap: false, //不生成 map
     devServer:{
         open: true,
         port:9099

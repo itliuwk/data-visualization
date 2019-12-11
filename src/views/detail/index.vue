@@ -29,12 +29,12 @@
         </div>
         <div class="table">
             <div>
-                <h4>设备信息</h4>
                 <el-table
                         :data="tableData"
                         style="width: 100%">
                     <el-table-column prop="name" label="垃圾箱设备信息"></el-table-column>
                     <el-table-column prop="id" label="编号"></el-table-column>
+                    <el-table-column prop="type" label="场地地址"></el-table-column>
                     <el-table-column prop="type" label="垃圾箱类型"></el-table-column>
                     <el-table-column prop="state" label="状态"></el-table-column>
                     <el-table-column prop="name" label="满溢情况">
@@ -42,21 +42,34 @@
                             <span>未满溢</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="name" label="经度">
-                        <template slot-scope="tableData">
-                            <span>113.264434</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="name" label="维度">
-                        <template slot-scope="tableData">
-                            <span>23.129162</span>
-                        </template>
-                    </el-table-column>
                     <el-table-column prop="name" label="桶内温度">
                         <template slot-scope="tableData">
                             <span>29°</span>
                         </template>
                     </el-table-column>
+                    <el-table-column prop="name" label="联系人">
+                        <template slot-scope="tableData">
+                            <span>刘伟坤</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="name" label="联系人电话">
+                        <template slot-scope="tableData">
+                            <span>13502520162</span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div style="margin-top: 20px;">
+                <el-table
+                        :data="tableData"
+                        style="width: 100%">
+                    <el-table-column prop="name" label="取货机设备信息"></el-table-column>
+                    <el-table-column prop="id" label="编号"></el-table-column>
+                    <el-table-column prop="id" label="场地地址"></el-table-column>>
+                    <el-table-column prop="state" label="状态"></el-table-column>
+                    <el-table-column prop="state" label="下辖商品数"></el-table-column>
+                    <el-table-column prop="state" label="库存情况"></el-table-column>
+
                     <el-table-column prop="name" label="联系人">
                         <template slot-scope="tableData">
                             <span>刘伟坤</span>

@@ -99,6 +99,7 @@
     import china from 'echarts/map/js/china'
 
     import Alert from '@/utils/message'
+
     export default {
         name: 'echart-map',
         data() {
@@ -154,12 +155,18 @@
                 };
                 this.map.setOption(option);
                 this.map.on('click', function (params) {
-                    Alert.success(params.name)
-                    option.series[0].data = [
+                    // Alert.success(params.name);
+                    let data = [
                         {
                             name: params.name, selected: true
                         }
                     ];
+                    if (option.series[0].data[0]) {
+                        if (params.name == option.series[0].data[0].name) {
+                            data = [];
+                        }
+                    }
+                    option.series[0].data = data;
                     that.map.setOption(option);
                 });
 

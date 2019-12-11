@@ -125,6 +125,7 @@
         #funnel {
             width: 200px;
             height: 150px;
+            z-index: 2;
         }
 
         .funnel {

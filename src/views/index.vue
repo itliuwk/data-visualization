@@ -31,6 +31,9 @@
     import Alert from '@/utils/message'
     import {key} from '../config'
 
+    import vPinyin from '@/utils/py/vue-py'
+
+
     export default {
         name: "index",
         data() {
@@ -69,7 +72,7 @@
                     return false;
                 }
 
-                let params = this.select.province + this.select.city;
+
                 if (!this.select.province || this.select.province == '全国') {
                     Alert.fail('省份不能为空');
                     return false;
@@ -78,6 +81,12 @@
                     Alert.fail('城市不能为空');
                     return false;
                 }
+                let params = this.select.province + this.select.city;
+                let obj = {
+                    province: vPinyin.chineseToPinYin(this.select.province).replace('Sheng', ''),
+                    city: vPinyin.chineseToPinYin(this.select.city).replace('Shi', ''),
+                };
+                console.log(obj);
                 this.isCity = true;
                 axios.get('http://restapi.amap.com/v3/geocode/geo?address=' + params + '&output=JSON&key=' + this.key).then(res => {
 
