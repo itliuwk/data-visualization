@@ -67,8 +67,8 @@
                     <el-table-column prop="id" label="编号"></el-table-column>
                     <el-table-column prop="id" label="场地地址"></el-table-column>>
                     <el-table-column prop="state" label="状态"></el-table-column>
-                    <el-table-column prop="state" label="下辖商品数"></el-table-column>
-                    <el-table-column prop="state" label="库存情况"></el-table-column>
+<!--                    <el-table-column prop="state" label="下辖商品数"></el-table-column>-->
+<!--                    <el-table-column prop="state" label="库存情况"></el-table-column>-->
 
                     <el-table-column prop="name" label="联系人">
                         <template slot-scope="tableData">

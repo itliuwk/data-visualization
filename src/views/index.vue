@@ -42,7 +42,8 @@
                 select: {province: '广东省', city: '广州市'},
                 location: [],
                 isCity: true,
-                key: key
+                key: key,
+                count: 0
             }
         },
         components: {
@@ -50,8 +51,15 @@
             All,
             City
         },
+        watch: {
+            count() {
+                console.log(324);
+            }
+        },
         mounted() {
-
+            // setInterval(() => {
+            //     this.count += 1
+            // }, 1000);
         },
         methods: {
             province(data) {
@@ -135,7 +143,7 @@
                     text-align: center;
                     background: #2F3571;
                     border-radius: 4px;
-                    margin: 0 10px;
+                    margin-left:10px;
                 }
             }
         }
@@ -148,7 +156,7 @@
         padding: 0;
     }
 
-    /deep/ .el-dialog__header {
-        padding: 0;
-    }
+    /*/deep/ .el-dialog__header {*/
+    /*    padding: 0;*/
+    /*}*/
 </style>

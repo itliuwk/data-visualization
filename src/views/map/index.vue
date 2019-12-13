@@ -207,14 +207,14 @@
         border-radius: 8px 8px 0px 0px !important;
     }
 
-    /deep/ .el-dialog__body {
-        border: 10px solid #fff;
-        padding: 0;
-    }
+    /*/deep/ .el-dialog__body {*/
+    /*    border: 10px solid #fff;*/
+    /*    padding: 0;*/
+    /*}*/
 
-    /deep/ .el-dialog__header {
-        padding: 0;
-    }
+    /*/deep/ .el-dialog__header {*/
+    /*    padding: 0;*/
+    /*}*/
 
     /deep/ .el-dialog__headerbtn {
         top: 10px;
