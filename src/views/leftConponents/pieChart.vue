@@ -1,80 +1,149 @@
 <template>
     <div class="pieChart-content">
         <div class="btn">
-            <p>垃圾投放实时数据</p>
-            <p>垃圾投放累计数据</p>
+            <p @click="today">垃圾投放实时数据</p>
+            <p @click="allThrow">垃圾投放累计数据</p>
         </div>
         <div id="chartsBin"></div>
     </div>
 </template>
 
 <script>
+    import {get_todayThrow, get_allThrow} from '@/api/index'
+    import mixins from "@/mixins/index.js";
+
     export default {
         name: "pieChart",
         data() {
             return {
-                msg: "pieChart"
+                msg: "pieChart",
+                tab: 1
             }
         },
-        mounted() {
-            this.init();
-        },
+        mixins: [mixins],
         methods: {
             init() {
                 let myChart = this.$echarts.init(document.getElementById('chartsBin'));
 
-                let option = {
-                    title: {
-                        text: '',
-                        subtext: '',
-                        left: 'center'
-                    },
-                    tooltip: {
-                        trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
-                    },
-                    legend: {
-                        bottom: 0,
-                        width: 340,
-                        left: 30,
-                        data: ['干垃圾', '湿垃圾', '有害垃圾', '可回收垃圾'],
-                        textStyle: {
-                            color: '#fff'
-                        }
-                    },
-                    series: [
-                        {
-                            type: 'pie',
-                            radius: '50%',
-                            center: ['50%', '50%'],
-                            selectedMode: 'single',
-                            data: [
-                                {value: 535, name: '干垃圾'},
-                                {value: 510, name: '湿垃圾'},
-                                {value: 634, name: '有害垃圾'},
-                                {value: 735, name: '可回收垃圾'}
-                            ],
-                            itemStyle: {
-                                emphasis: {
-                                    shadowBlur: 10,
-                                    shadowOffsetX: 0,
-                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                },
-                                normal: {
-                                    color: function (params) {
-                                        //自定义颜色
-                                        var colorList = [
-                                            '#DFDFDF', '#198FF9', '#EA2F41', '#F9A715'
-                                        ];
-                                        return colorList[params.dataIndex]
+                if (this.tab == 1) {
+                    get_todayThrow(this.allParams).then(res => {
+                        let option = {
+                            title: {
+                                text: '',
+                                subtext: '',
+                                left: 'center'
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: " <br/>{b} : {c} ({d}%)"
+                            },
+                            legend: {
+                                bottom: 0,
+                                width: 340,
+                                left: 30,
+                                data: ['干垃圾', '湿垃圾', '有害垃圾', '可回收垃圾'],
+                                textStyle: {
+                                    color: '#fff'
+                                }
+                            },
+                            series: [
+                                {
+                                    type: 'pie',
+                                    radius: '50%',
+                                    center: ['50%', '50%'],
+                                    selectedMode: 'single',
+                                    data: [
+                                        {value: res.dry, name: '干垃圾'},
+                                        {value: res.wet, name: '湿垃圾'},
+                                        {value: res.harm, name: '有害垃圾'},
+                                        {value: res.recycle, name: '可回收垃圾'}
+                                    ],
+                                    itemStyle: {
+                                        emphasis: {
+                                            shadowBlur: 10,
+                                            shadowOffsetX: 0,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        },
+                                        normal: {
+                                            color: function (params) {
+                                                //自定义颜色
+                                                var colorList = [
+                                                    '#DFDFDF', '#198FF9', '#EA2F41', '#F9A715'
+                                                ];
+                                                return colorList[params.dataIndex]
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                        }
-                    ]
-                };
+                            ]
+                        };
 
-                myChart.setOption(option);
+                        myChart.setOption(option);
+                    });
+                } else if (this.tab == 2) {
+                    get_allThrow(this.allParams).then(res => {
+                        let option = {
+                            title: {
+                                text: '',
+                                subtext: '',
+                                left: 'center'
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: " <br/>{b} : {c} ({d}%)"
+                            },
+                            legend: {
+                                bottom: 0,
+                                width: 340,
+                                left: 30,
+                                data: ['干垃圾', '湿垃圾', '有害垃圾', '可回收垃圾'],
+                                textStyle: {
+                                    color: '#fff'
+                                }
+                            },
+                            series: [
+                                {
+                                    type: 'pie',
+                                    radius: '50%',
+                                    center: ['50%', '50%'],
+                                    selectedMode: 'single',
+                                    data: [
+                                        {value: res.dry, name: '干垃圾'},
+                                        {value: res.wet, name: '湿垃圾'},
+                                        {value: res.harm, name: '有害垃圾'},
+                                        {value: res.recycle, name: '可回收垃圾'}
+                                    ],
+                                    itemStyle: {
+                                        emphasis: {
+                                            shadowBlur: 10,
+                                            shadowOffsetX: 0,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        },
+                                        normal: {
+                                            color: function (params) {
+                                                //自定义颜色
+                                                var colorList = [
+                                                    '#DFDFDF', '#198FF9', '#EA2F41', '#F9A715'
+                                                ];
+                                                return colorList[params.dataIndex]
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        };
+
+                        myChart.setOption(option);
+                    });
+                }
+            },
+            today() {
+                this.tab = 1;
+                this.init();
+            },
+            allThrow() {
+                this.tab = 2;
+                this.init();
             }
         }
     }

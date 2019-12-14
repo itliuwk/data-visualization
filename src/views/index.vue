@@ -29,7 +29,7 @@
 
     import axios from 'axios'
     import Alert from '@/utils/message'
-    import {key} from '../config'
+    import {key, TIME_REFRESH} from '../config'
 
     import vPinyin from '@/utils/py/vue-py'
 
@@ -43,7 +43,8 @@
                 location: [],
                 isCity: true,
                 key: key,
-                count: 0
+                loadSetInterval: 0,
+                timer: null
             }
         },
         components: {
@@ -51,15 +52,9 @@
             All,
             City
         },
-        watch: {
-            count() {
-                console.log(324);
-            }
-        },
+
         mounted() {
-            // setInterval(() => {
-            //     this.count += 1
-            // }, 1000);
+            this.view();
         },
         methods: {
             province(data) {
@@ -76,11 +71,11 @@
             },
             view() {
                 if (this.select.province == '全国') {
+                    clearInterval(this.timer);
                     this.isCity = false;
                     return false;
                 }
-
-
+                clearInterval(this.timer);
                 if (!this.select.province || this.select.province == '全国') {
                     Alert.fail('省份不能为空');
                     return false;
@@ -91,11 +86,20 @@
                 }
                 let params = this.select.province + this.select.city;
                 let obj = {
-                    province: vPinyin.chineseToPinYin(this.select.province).replace('Sheng', ''),
-                    city: vPinyin.chineseToPinYin(this.select.city).replace('Shi', ''),
+                    province: this.select.province,
+                    provinceSpell: vPinyin.chineseToPinYin(this.select.province).replace('Sheng', ''),
+                    city: this.select.city,
+                    citySpell: vPinyin.chineseToPinYin(this.select.city).replace('Shi', ''),
                 };
-                console.log(obj);
                 this.isCity = true;
+
+                this.$store.commit('setParams', obj);
+
+                this.timer = setInterval(() => {
+                    this.$store.commit('setLoadSetInterval', Math.random());
+                }, TIME_REFRESH);
+
+
                 axios.get('http://restapi.amap.com/v3/geocode/geo?address=' + params + '&output=JSON&key=' + this.key).then(res => {
 
                     this.location = res.data.geocodes[0].location.split(',');
@@ -143,7 +147,7 @@
                     text-align: center;
                     background: #2F3571;
                     border-radius: 4px;
-                    margin-left:10px;
+                    margin-left: 10px;
                 }
             }
         }

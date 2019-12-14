@@ -8,78 +8,36 @@
             <p>可回收占比</p>
         </div>
         <div class="table-content" v-for="(item,index) in table" :key="index">
-            <p>{{item.name}}</p>
-            <p class="color">{{item.num}}</p>
-            <p class="color">{{item.quality}}</p>
-            <p class="color">{{item.proportion}}%</p>
+            <p class="locationName" :title="item.locationName">{{item.locationName}}</p>
+            <p class="color">{{item.customer}}</p>
+            <p class="color">{{item.weight}}</p>
+            <p class="color">{{item.recycle}}%</p>
         </div>
     </div>
 </template>
 
 <script>
+    import {get_locationThrowRank} from '@/api/index'
+    import mixins from "@/mixins/index.js";
+
     export default {
         name: "community",
         data() {
             return {
                 msg: "community",
-                table: [
-                    {
-                        name: '科慧花园',
-                        num: 654,
-                        quality: 234,
-                        proportion: 32
-                    }, {
-                        name: '广州亚运城',
-                        num: 654,
-                        quality: 345,
-                        proportion: 33
-                    }, {
-                        name: '万科幸福誉',
-                        num: 456,
-                        quality: 234,
-                        proportion: 74
-                    }, {
-                        name: '祈福黄金海岸',
-                        num: 575,
-                        quality: 234,
-                        proportion: 42
-                    }, {
-                        name: '南沙保利城',
-                        num: 456,
-                        quality: 907,
-                        proportion: 23
-                    }, {
-                        name: '瑞万璞悦里',
-                        num: 564,
-                        quality: 544,
-                        proportion: 63
-                    }, {
-                        name: '万科桃源里',
-                        num: 654,
-                        quality: 256,
-                        proportion: 13
-                    }, {
-                        name: '合景誉山国际',
-                        num: 416,
-                        quality: 214,
-                        proportion: 75
-                    }, {
-                        name: '云溪四季',
-                        num: 641,
-                        quality: 521,
-                        proportion: 25
-                    }, {
-                        name: '越秀滨海新城',
-                        num: 672,
-                        quality: 523,
-                        proportion: 56
-                    },]
+                table: []
             }
         },
-        mounted() {
+        mixins: [mixins],
+        methods: {
+            init() {
+                get_locationThrowRank(this.allParams).then(res => {
+                    console.log(res);
+                    this.table = res;
+                })
+            }
+        }
 
-        },
-        methods: {}
     }
 
 </script>
@@ -108,6 +66,9 @@
                 flex: 1;
                 color: #fff;
                 text-align: center;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
 
             .color {
@@ -119,5 +80,6 @@
         .table-content {
             margin-bottom: 5px;
         }
+
     }
 </style>

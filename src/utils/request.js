@@ -12,8 +12,9 @@ const server = axios.create({
  */
 server.interceptors.request.use(config => {
 
+    return config;
 }, error => {
-
+    return Promise.reject(error)
 });
 
 

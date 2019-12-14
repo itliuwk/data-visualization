@@ -3,28 +3,28 @@
         <div>
             <p>累计环保投入参与人数</p>
             <div class="num">
-                <template v-for="item in partake.partake.num">
+                <template v-for="item in partake.customer.num">
                     <span :class="item!=','?'color':''"> {{item}}</span>
 
                 </template>
                 <span>人</span>
             </div>
             <div class="info">
-                <p>上月添加：{{partake.partake.add}} 人</p>
-                <p>环比增涨：{{partake.partake.increase}} %</p>
+                <p>上月添加：{{partake.customer.add||0}} 人</p>
+                <p>环比增涨：{{partake.customer.increase| toRate2}}</p>
             </div>
         </div>
         <div style="margin: 15px 0">
             <p>累计垃圾分类投放质量</p>
             <div class="num">
-                <template v-for="item in partake.putIn.num">
+                <template v-for="item in partake.rubbish.num">
                     <span :class="item!=','?'color':''"> {{item}}</span>
                 </template>
                 <span>公斤</span>
             </div>
             <div class="info">
-                <p>上月添加：{{partake.putIn.add}} 人</p>
-                <p>环比增涨：{{partake.putIn.increase}} %</p>
+                <p>上月添加：{{partake.rubbish.add||0}} 人</p>
+                <p>环比增涨：{{partake.rubbish.increase| toRate2}}</p>
             </div>
         </div>
         <div>
@@ -36,8 +36,8 @@
                 <span>个</span>
             </div>
             <div class="info">
-                <p>上月添加：{{partake.order.add}} 人</p>
-                <p>环比增涨：{{partake.order.increase}} %</p>
+                <p>上月添加：{{partake.order.add||0}} 人</p>
+                <p>环比增涨：{{partake.order.increase| toRate2}}</p>
             </div>
         </div>
     </div>
@@ -45,58 +45,64 @@
 
 <script>
     import {toThousands} from '@/utils/index'
+    import {get_allSum, get_allLinkRelative} from '@/api/index'
+    import mixins from "@/mixins/index.js";
+
     export default {
         name: "partake",
         data() {
             return {
                 msg: "partake",
                 partake: {
-                    partake:{},
-                    putIn:{},
-                    order:{},
+                    customer: {},
+                    rubbish: {},
+                    order: {},
                 }
             }
         },
-        mounted() {
-            this.get_detail();
-        },
+        mixins: [mixins],
+
         methods: {
-            get_detail() {
-                let partake = {
-                    partake: {
-                        num: toThousands(656351644),
-                        add: 515,
-                        increase: 63
-                    },
-                    putIn: {
-                        num: toThousands(826351324),
-                        add: 45,
-                        increase: 33
-                    },
-                    order: {
-                        num: toThousands(153592501),
-                        add: 123,
-                        increase: 45
-                    }
-                };
+            init() {
+                get_allSum(this.allParams).then(res => {
+                    get_allLinkRelative(this.$store.state.allParams).then(response => {
+                        let params = {
+                            customer: {
+                                num: toThousands(res.customer),
+                                add: response.lasetMonth,
+                                increase: response.customer.monthBeforeLastMonth ? (res.customer.lastMonth - response.customer.monthBeforeLastMonth) / response.customer.monthBeforeLastMonth : '-'
+                            },
+                            rubbish: {
+                                num: toThousands(res.rubbish),
+                                add: response.rubbish.lasetMonth,
+                                increase: response.rubbish.monthBeforeLastMonth ? (res.rubbish.lastMonth - response.rubbish.monthBeforeLastMonth) / response.rubbish.monthBeforeLastMonth : '-'
+                            },
+                            order: {
+                                num: toThousands(res.order),
+                                add: response.lasetMonth,
+                                increase: response.order.monthBeforeLastMonth ? (res.order.lastMonth - response.order.monthBeforeLastMonth) / response.order.monthBeforeLastMonth : '-'
+                            }
+                        };
+                        this.partake = params;
+                    })
+                });
 
-                this.partake = partake;
-
-            },
-            toThousands(num) {
-                let result = [], counter = 0;
-                num = (num || 0).toString().split('');
-                for (let i = num.length - 1; i >= 0; i--) {
-                    counter++;
-                    result.unshift(num[i]);
-                    if (!(counter % 3) && i != 0) {
-                        result.unshift(',');
-                    }
-                }
-                return result.join('');
             }
         },
-        filters: {}
+        filters: {
+            toRate2(num) {
+                if (num === '-') {
+                    return num
+                } else {
+                    num = num * 100;
+                    if (Math.floor(num) === num) {
+                        return num + '%'
+                    } else {
+                        return num.toFixed(2) + "%"
+                    }
+                }
+            }
+        }
     }
 
 </script>
