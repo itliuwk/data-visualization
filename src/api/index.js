@@ -66,3 +66,72 @@ export function get_locationThrowRank(params) {
         params,
     }).then(res => res.data.data)
 }
+
+
+
+/**
+ * 垃圾数据面板 / 各区分类部署实施效益折线图
+ * @param params
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export function get_districtThrowDiagram(params) {
+    return request({
+        url: '/rb/api/board/districtThrowDiagram',
+        method: 'get',
+        params,
+    }).then(res => res.data.data)
+}
+
+
+/**
+ * 垃圾数据面板 / 积分兑换统计面积图
+ * @param params
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export function get_orderTrend(params) {
+    return request({
+        url: '/rb/api/board/orderTrend',
+        method: 'get',
+        params,
+    }).then(res => res.data.data)
+}
+
+/**
+ * 垃圾数据面板 / 设备分布柱状图
+ * @param params
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export function get_locationDevices(params) {
+    return request({
+        url: '/rb/api/board/locationDevices',
+        method: 'get',
+        params,
+    }).then(res => res.data.data)
+}
+
+
+/**
+ * 垃圾数据面板 / 设备状况监控
+ * @param params
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export function get_deviceState(params) {
+    return request({
+        url: '/rb/api/board/deviceState',
+        method: 'get',
+        params,
+    }).then(res => res.data.data)
+}
+
+/**
+ * 垃圾数据面板 / 累计转换率
+ * @param params
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export function get_orderCustomerSummary(params) {
+    return request({
+        url: '/rb/api/board/orderCustomerSummary',
+        method: 'get',
+        params,
+    }).then(res => res.data.data)
+}

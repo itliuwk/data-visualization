@@ -17,34 +17,40 @@
         <div class="info">
             <div>
                 <p>故障机</p>
-                <p>垃圾箱：612台</p>
-                <p>取货机：86台</p>
+                <p>垃圾箱：{{detail.badRubbish||0}}台</p>
+                <p>取货机：{{detail.badPickup||0}}台</p>
             </div>
             <div>
                 <p>剩余备用</p>
-                <p>垃圾箱：23台</p>
-                <p>取货机：15台</p>
+                <p>垃圾箱：{{detail.usableRubbish||0}}台</p>
+                <p>取货机：{{detail.usablePickup ||0}}台</p>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import {get_deviceState} from '@/api/index'
+    import mixins from "@/mixins/index.js";
+    //        mixins: [mixins],
     export default {
         name: "partake",
         data() {
             return {
-                msg: "监控"
+                msg: "监控",
+                detail: {}
             }
         },
-        mounted() {
-            this.init();
-        },
+        mixins: [mixins],
         methods: {
             init() {
-                this.overflowPie();
-                this.dustbinDevOpsPie();
-                this.pickDevOpsPie();
+                get_deviceState(this.allParams).then(res => {
+                    this.detail = res;
+                    this.overflowPie();
+                    this.dustbinDevOpsPie();
+                    this.pickDevOpsPie();
+                });
+
             },
             overflowPie() {
                 let myChart = this.$echarts.init(document.getElementById('overflowPie'));
@@ -88,12 +94,12 @@
 
                             data: [
                                 {
-                                    value: 335, name: '未满溢', itemStyle: {
+                                    value: this.detail.available, name: '未满溢', itemStyle: {
                                         color: '#FFD400'
                                     }
                                 },
                                 {
-                                    value: 310, name: '满溢', itemStyle: {
+                                    value: this.detail.full, name: '满溢', itemStyle: {
                                         color: '#FF7F00'
                                     }
                                 }
@@ -145,12 +151,12 @@
 
                             data: [
                                 {
-                                    value: 25, name: '在线', itemStyle: {
+                                    value: this.detail.rubbishOnLine, name: '在线', itemStyle: {
                                         color: '#22A6FF'
                                     }
                                 },
                                 {
-                                    value: 105, name: '离线', itemStyle: {
+                                    value: this.detail.rubbishOffLine, name: '离线', itemStyle: {
                                         color: '#FF7F00'
                                     }
                                 }
@@ -202,12 +208,12 @@
 
                             data: [
                                 {
-                                    value: 125, name: '在线', itemStyle: {
+                                    value: this.detail.pickupOnLine, name: '在线', itemStyle: {
                                         color: '#FFD400'
                                     }
                                 },
                                 {
-                                    value: 105, name: '离线', itemStyle: {
+                                    value: this.detail.pickupOffLine, name: '离线', itemStyle: {
                                         color: '#FF7F00'
                                     }
                                 }

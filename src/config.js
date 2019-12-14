@@ -1,6 +1,6 @@
 let _BASE_API = "http://192.168.0.164:8088";//
 
-let _TIME_REFRESH = 5000; // 多少秒请求一次数据
+let _TIME_REFRESH = 5000000; // 多少秒请求一次数据
 
 
 // run build 切换地址

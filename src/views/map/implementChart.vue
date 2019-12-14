@@ -6,6 +6,9 @@
 </template>
 
 <script>
+    import {get_districtThrowDiagram} from '@/api/index'
+    import mixins from "@/mixins/index.js";
+    //        mixins: [mixins],
     export default {
         name: "implementChart",
         data() {
@@ -13,100 +16,78 @@
                 msg: "implementChart"
             }
         },
-        mounted() {
-            this.init()
-        },
+        mixins: [mixins],
         methods: {
             init() {
                 let myChart = this.$echarts.init(document.getElementById('implementLine'));
-                let option = {
-                    title: {
-                        text: ''
-                    },
-                    tooltip: {
-                        trigger: 'axis'
-                    },
-                    legend: {
-                        data: ['番禺', '天河', '海珠', '越秀', '荔湾'],
-                        textStyle: {
-                            color: '#fff'
-                        }
-                    },
-                    grid: {
-                        left: '3%',
-                        right: '4%',
-                        bottom: '3%',
-                        containLabel: true
-                    },
-                    xAxis: {
-                        name: '月',
-                        type: 'category',
-                        boundaryGap: false,
-                        data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12',],
-                        nameTextStyle: {
-                            color: '#fff'
-                        },
-                        axisLine: {
-                            lineStyle: {
-                                color: '#fff'
-                            }
-                        }
-                    },
-                    yAxis: {
-                        type: 'value',
-                        offset: -10,
-                        name: '累计分类投放质量（KG）',
-                        nameTextStyle: {
-                            color: '#fff'
-                        },
-                        axisLine: {
-                            lineStyle: {
-                                color: '#fff'
-                            }
-                        }
-                    },
-                    series: [
-                        {
-                            name: '番禺',
+                get_districtThrowDiagram(this.allParams).then(res => {
+                    let legendData = [], seriesData = [];
+                    res.map(item => {
+                        legendData.push(item.district);
+                        seriesData.push({
+                            name: item.district,
                             type: 'line',
                             stack: '总量',
-                            data: [120, 132, 101, 134, 90, 230, 210, 51, 65, 145, 651, 963],
-                            itemStyle: {
-                                color: '#FFE711'
-                            }
-                        },
-                        {
-                            name: '天河',
-                            type: 'line',
-                            stack: '总量',
-                            data: [220, 182, 191, 234, 290, 330, 310, 96, 54, 69, 654, 98],
-                            itemStyle: {
-                                color: '#11D6FF'
-                            }
-                        },
-                        {
-                            name: '海珠',
-                            type: 'line',
-                            stack: '总量',
-                            data: [150, 232, 201, 154, 190, 330, 410, 89, 125, 156, 654, 987]
-                        },
-                        {
-                            name: '越秀',
-                            type: 'line',
-                            stack: '总量',
-                            data: [320, 332, 301, 334, 390, 330, 320, 652, 452, 321, 658, 125]
-                        },
-                        {
-                            name: '荔湾',
-                            type: 'line',
-                            stack: '总量',
-                            data: [820, 932, 901, 934, 1290, 1330, 1320, 654, 669, 852, 1290, 1330,]
-                        }
-                    ]
-                };
+                            data: item.weight
+                        });
+                        return item;
+                    });
 
 
-                myChart.setOption(option)
+                    let option = {
+                        title: {
+                            text: ''
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data: legendData,
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis: {
+                            name: '月',
+                            type: 'category',
+                            boundaryGap: false,
+                            data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12',],
+                            nameTextStyle: {
+                                color: '#fff'
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#fff'
+                                }
+                            }
+                        },
+                        yAxis: {
+                            type: 'value',
+                            offset: -10,
+                            left: '3%',
+                            name: '累计投放质量（KG）',
+                            nameTextStyle: {
+                                color: '#fff'
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#fff'
+                                }
+                            }
+                        },
+                        series: seriesData
+                    };
+
+
+                    myChart.setOption(option)
+                });
+
             }
         }
     }

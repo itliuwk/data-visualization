@@ -32,7 +32,6 @@
         methods: {
             init() {
                 get_locationThrowRank(this.allParams).then(res => {
-                    console.log(res);
                     this.table = res;
                 })
             }

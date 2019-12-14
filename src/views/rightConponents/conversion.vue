@@ -23,88 +23,93 @@
         <div class="use">
             <div class="use-info">
                 <p>累计使用积分</p>
-                <p>1000000</p>
-                <p>等价于：10000元</p>
-                <p>=10000KG垃圾</p>
+                <p>{{detail.credit}}</p>
+                <p>等价于：{{detail.amount}}元</p>
+                <p>={{detail.rubbish}}KG垃圾</p>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import {get_orderCustomerSummary} from '@/api/index'
+    import mixins from "@/mixins/index.js";
+    //        mixins: [mixins],
     export default {
         name: "conversion",
         data() {
             return {
-                msg: "转换率"
+                msg: "转换率",
+                detail: {}
             }
         },
-        mounted() {
-            this.init()
-        },
+        mixins: [mixins],
         methods: {
             init() {
                 let myChart = this.$echarts.init(document.getElementById('funnel'));
-
-                let option = {
-                    title: {
-                        text: '累计转换率',
-                        subtext: '',
-                        textStyle: {
-                            color: '#fff',
-                            fontSize: 14
+                get_orderCustomerSummary(this.allParams).then(res => {
+                    this.detail = res;
+                    let option = {
+                        title: {
+                            text: '累计转换率',
+                            subtext: '',
+                            textStyle: {
+                                color: '#fff',
+                                fontSize: 14
+                            },
+                            left: 10
                         },
-                        left: 10
-                    },
-                    tooltip: {
-                        trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c}"
-                    },
-                    series: [
-                        {
-                            name: '',
-                            type: 'funnel',
-                            left: '10%',
-                            top: 30,
-                            fontSize: 10,
-                            bottom: 10,
-                            width: '100%',
-                            min: 0,
-                            max: 80,
-                            sort: 'descending',
-                            gap: 2,
-                            label: {
-                                show: true,
-                                position: 'inside'
-                            },
-                            labelLine: {
-                                length: 10,
-                                lineStyle: {
-                                    width: 1,
-                                    type: 'solid'
-                                }
-                            },
-                            itemStyle: {
-                                borderColor: '#fff',
-                                borderWidth: 1
-                            },
-                            emphasis: {
-                                label: {
-                                    fontSize: 20
-                                }
-                            },
-                            data: [
-                                {
-                                    value: 60, name: '访问', itemStyle: {color: '#FFD400'}
-                                },
-                                {value: 40, name: '咨询', itemStyle: {color: '#22A6FF'}},
-                                {value: 20, name: '订单', itemStyle: {color: '#FF7F00'}}
-                            ]
-                        }
-                    ]
-                };
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: "{a} <br/>{b} : {c}"
+                        },
+                        series: [
+                            {
+                                name: '',
+                                type: 'funnel',
+                                left: '10%',
+                                top: 30,
+                                right: '10%',
+                                fontSize: 10,
+                                bottom: 10,
+                                width: '80%',
 
-                myChart.setOption(option)
+                                sort: 'descending',
+                                gap: 2,
+                                label: {
+                                    show: true,
+                                    position: 'inside'
+                                },
+                                labelLine: {
+                                    length: 10,
+                                    lineStyle: {
+                                        width: 1,
+                                        type: 'solid'
+                                    }
+                                },
+                                itemStyle: {
+                                    borderColor: '#fff',
+                                    borderWidth: 1
+                                },
+                                emphasis: {
+                                    label: {
+                                        fontSize: 20
+                                    }
+                                },
+                                data: [
+                                    {
+                                        value: res.customer, name: '浏览', itemStyle: {color: '#FFD400'}
+                                    },
+                                    {value: res.create, name: '下单', itemStyle: {color: '#22A6FF'}},
+                                    {value: res.paid, name: '付款', itemStyle: {color: '#FF7F00'}}
+                                ]
+                            }
+                        ]
+                    };
+
+                    myChart.setOption(option)
+                });
+
 
             }
         }

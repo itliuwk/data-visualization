@@ -6,6 +6,9 @@
 </template>
 
 <script>
+    import {get_locationDevices} from '@/api/index'
+    import mixins from "@/mixins/index.js";
+    //        mixins: [mixins],
     export default {
         name: "distribution",
         data() {
@@ -13,88 +16,96 @@
                 msg: "分布"
             }
         },
-        mounted() {
-            this.init();
-        },
+        mixins: [mixins],
         methods: {
             init() {
                 let myChart = this.$echarts.init(document.getElementById('chartsBar'));
-                let option = {
-                    title: {
-                        text: '',
-                        subtext: ''
-                    },
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {
-                            type: 'shadow'
-                        }
-                    },
-                    legend: {
-                        data: ['垃圾箱', '取货机'],
-                        textStyle: {
-                            color: '#fff'
-                        }
-                    },
-                    grid: {
-                        top: '15%',
-                        left: '5%',
-                        right: '5%',
-                        bottom: '5%',
-                        containLabel: true
-                    },
-                    xAxis: {
-                        type: 'category',
-                        data: ['科慧花园', '广州亚运城', '万科幸福誉', '祈福黄金海岸', '南沙保利城', '瑞万璞悦里', '万科桃源里', '云溪四季'],
-                        nameTextStyle: {
-                            color: '#fff'
+                get_locationDevices(this.allParams).then(res => {
+                    let locationNames = [], rubbishs = [], pickups = [];
+                    res.map(item => {
+                        locationNames.push(item.locationName);
+                        rubbishs.push(item.rubbish);
+                        pickups.push(item.pickup);
+                        return item;
+                    });
+                    let option = {
+                        title: {
+                            text: '',
+                            subtext: ''
                         },
-                        axisLine: {
-                            lineStyle: {
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        legend: {
+                            data: ['垃圾箱', '取货机'],
+                            textStyle: {
                                 color: '#fff'
                             }
-
                         },
-                        axisLabel: {
-                            interval: 0,
-                            fontSize: 8,
-                            rotate: -30
-                        }
-
-                    },
-                    yAxis: {
-                        type: 'value',
-                        boundaryGap: [0, 0.01],
-                        nameTextStyle: {
-                            color: '#fff'
+                        grid: {
+                            top: '15%',
+                            left: '5%',
+                            right: '5%',
+                            bottom: '5%',
+                            containLabel: true
                         },
-                        axisLine: {
-                            lineStyle: {
+                        xAxis: {
+                            type: 'category',
+                            data: locationNames,
+                            nameTextStyle: {
                                 color: '#fff'
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#fff'
+                                }
+
+                            },
+                            axisLabel: {
+                                interval: 0,
+                                fontSize: 8,
+                                rotate: -30
                             }
-                        }
-                    },
-                    series: [
-                        {
-                            name: '垃圾箱',
-                            type: 'bar',
-                            data: [54, 12, 55, 167, 23, 65, 45, 23],
-                            itemStyle: {
-                                color: '#FFE711'
+
+                        },
+                        yAxis: {
+                            type: 'value',
+                            boundaryGap: [0, 0.01],
+                            nameTextStyle: {
+                                color: '#fff'
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#fff'
+                                }
                             }
                         },
-                        {
-                            name: '取货机',
-                            type: 'bar',
-                            data: [56, 43, 32, 87, 34, 54, 32, 67],
-                            itemStyle: {
-                                color: '#11D6FF'
+                        series: [
+                            {
+                                name: '垃圾箱',
+                                type: 'bar',
+                                data:rubbishs,
+                                itemStyle: {
+                                    color: '#FFE711'
+                                }
+                            },
+                            {
+                                name: '取货机',
+                                type: 'bar',
+                                data: pickups,
+                                itemStyle: {
+                                    color: '#11D6FF'
+                                }
                             }
-                        }
-                    ]
-                };
+                        ]
+                    };
 
-                myChart.setOption(option)
+                    myChart.setOption(option)
+
+                });
 
             }
         }
