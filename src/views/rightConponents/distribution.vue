@@ -1,6 +1,6 @@
 <template>
     <div class="distribution-content">
-        <p>广州市设备分布</p>
+        <p>{{allParams.city}}设备分布</p>
         <div id="chartsBar"></div>
     </div>
 </template>

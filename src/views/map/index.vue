@@ -67,9 +67,9 @@
             }
         },
         watch: {
-            location() {
+            location(val) {
                 this.loading = true;
-
+                this.center = val
             }
         },
         components: {

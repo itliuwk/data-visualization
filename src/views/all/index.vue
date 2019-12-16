@@ -6,9 +6,9 @@
                     <img src="../../assets/images/left1.png" alt="">
                     <div class="content">
                         <div class="content-left1">
-                            <p>累计用户数量</p>
+                            <p>{{title}}累计用户数量</p>
                             <p>
-                                <span>658,464</span>
+                                <span>{{userNum}}</span>
                                 <span>人</span>
                             </p>
                         </div>
@@ -18,7 +18,7 @@
                     <img src="../../assets/images/left2.png" alt="">
                     <div class="content">
                         <div class="content-left2">
-                            <p>用户投放比例(吨)</p>
+                            <p>{{title}}用户投放比例(吨)</p>
                             <div id="putInPie"></div>
                         </div>
                     </div>
@@ -38,8 +38,10 @@
                 <div class="right1">
                     <img src="../../assets/images/right1.png" alt="">
                     <div class="content">
+
                         <div class="content-right1">
-                            <div class="table">
+                            <h4 style="padding-top: 35px;color: #fff">{{title}}设备统计</h4>
+                            <div class="table" style="padding-top: 5px">
                                 <div>
                                     <p>设备总数</p>
                                     <p>垃圾箱</p>
@@ -48,11 +50,11 @@
                                     <p>备用</p>
                                 </div>
                                 <div>
-                                    <p>4210个</p>
-                                    <p>3101个</p>
-                                    <p>2100个</p>
-                                    <p>1222个</p>
-                                    <p>4554个</p>
+                                    <p>{{device.device||0}}个</p>
+                                    <p>{{device.rubbish||0}}个</p>
+                                    <p>{{device.pickup||0}}个</p>
+                                    <p>{{device.bad||0}}个</p>
+                                    <p>{{device.backup||0}}个</p>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +64,8 @@
                     <img src="../../assets/images/right2.png" alt="">
                     <div class="content">
                         <div class="content-right2">
-                            <div class="table" style="padding: 50px  40px 0 50px">
+                            <h4 style="padding-top: 35px;color: #fff">{{title}}订单统计</h4>
+                            <div class="table" style="padding: 5px  40px 0 50px">
                                 <div>
                                     <p>订单交易额</p>
                                     <p>订单成交总数</p>
@@ -70,10 +73,10 @@
                                     <p>累计收益</p>
                                 </div>
                                 <div>
-                                    <p>4210万</p>
-                                    <p>3101万</p>
-                                    <p>2100万</p>
-                                    <p>1222万</p>
+                                    <p>{{summary.amount||0}}万</p>
+                                    <p>{{summary.cost||0}}万</p>
+                                    <p>{{summary.order||0}}万</p>
+                                    <p>{{summary.profit||0}}万</p>
                                 </div>
                             </div>
                         </div>
@@ -83,7 +86,7 @@
                     <img src="../../assets/images/right3.png" alt="">
                     <div class="content">
                         <div class="content-right3">
-                            <p>城市销售额排名</p>
+                            <p>{{title}}城市销售额排名</p>
                             <div id="cityLin"></div>
                         </div>
                     </div>
@@ -97,21 +100,45 @@
     import {toThousands} from '@/utils/index'
     import echarts from 'echarts';
     import china from 'echarts/map/js/china'
-
+    import vPinyin from '@/utils/py/vue-py'
     import Alert from '@/utils/message'
+    import {
+        get_provinceCustomers,
+        get_provinceThrow,
+        get_provinceThrowRank,
+        get_provinceDevice,
+        get_provinceOrderSummary,
+        get_cityOrderRank
+    } from '@/api/all'
 
     export default {
         name: 'echart-map',
         data() {
-            return {};
+            return {
+                userNum: 0,
+                device: {},
+                summary: {},
+                title: '全国',
+                params: {
+                    province: '',
+                    provinceSpell: ''
+                }
+            }
+                ;
         },
         mounted() {
             this.loadMap();
-            this.putInPie();
-            this.rankingLin();
-            this.cityLin();
+            this.init();
         },
         methods: {
+            init() {
+                this.get_provinceCustomers();
+                this.get_provinceDevice();
+                this.get_provinceOrderSummary();
+                this.putInPie();
+                this.rankingLin();
+                this.cityLin();
+            },
             loadMap() {
                 let that = this;
                 this.map = echarts.init(document.getElementById('map'));
@@ -166,176 +193,232 @@
                             data = [];
                         }
                     }
+                    if (data.length) {
+                        that.params = {
+                            province: data[0].name + '省',
+                            provinceSpell: vPinyin.chineseToPinYin(data[0].name)
+                        };
+                        that.title = data[0].name
+                    } else {
+                        that.params = {
+                            province: '',
+                            provinceSpell: ''
+                        };
+                        that.title = '全国'
+                    }
+                    that.init();
                     option.series[0].data = data;
                     that.map.setOption(option);
                 });
 
             },
-
+            get_provinceCustomers() {
+                get_provinceCustomers(this.params).then(res => {
+                    this.userNum = toThousands(res);
+                })
+            },
+            get_provinceDevice() {
+                get_provinceDevice(this.params).then(res => {
+                    this.device = res || {};
+                })
+            },
+            get_provinceOrderSummary() {
+                get_provinceOrderSummary(this.params).then(res => {
+                    this.summary = res || {};
+                })
+            },
             putInPie() {
                 let myChart = this.$echarts.init(document.getElementById('putInPie'));
-                let option = {
-                    tooltip: {
-                        trigger: 'item',
-                        formatter: "{a} <br/>{b}: {c} ({d}%)"
-                    },
-                    legend: {
-                        x: 'center',
-                        itemWidth: 15,
-                        itemHeight: 15,
-                        bottom: 0,
-                        icon: 'circle',
-                        data: ["干垃圾", "湿垃圾", "有害垃圾", "可回收垃圾"],
-                        textStyle: {
-                            color: '#fff',
-                            fontSize: 10
-                        }
-                    },
-                    series: [
-                        {
-                            name: '',
-                            type: 'pie',
-                            radius: ['50%', '65%'],
-                            center: ['50%', '40%'],
-                            avoidLabelOverlap: false,
-                            label: {
-                                normal: {
-                                    show: false,
-                                    position: 'center',
-                                    color: '#fff'
-                                },
-                                emphasis: {
-                                    show: true,
-                                    textStyle: {
-                                        fontSize: '12'
+                get_provinceThrow(this.params).then(res => {
+                    myChart.clear();
+                    let option = {
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: " <br/>{b}: {c} ({d}%)"
+                        },
+                        legend: {
+                            x: 'center',
+                            itemWidth: 15,
+                            itemHeight: 15,
+                            bottom: 0,
+                            icon: 'circle',
+                            data: ["干垃圾", "湿垃圾", "有害垃圾", "可回收垃圾"],
+                            textStyle: {
+                                color: '#fff',
+                                fontSize: 10
+                            }
+                        },
+                        series: [
+                            {
+                                name: '',
+                                type: 'pie',
+                                radius: ['50%', '65%'],
+                                center: ['50%', '40%'],
+                                avoidLabelOverlap: false,
+                                label: {
+                                    normal: {
+                                        show: false,
+                                        position: 'center',
+                                        color: '#fff'
+                                    },
+                                    emphasis: {
+                                        show: true,
+                                        textStyle: {
+                                            fontSize: '12'
+                                        }
                                     }
-                                }
-                            },
+                                },
 
-                            data: [
-                                {
-                                    value: 25, name: '干垃圾', itemStyle: {
-                                        color: '#22A6FF'
+                                data: [
+                                    {value: res.dry, name: '干垃圾'},
+                                    {value: res.wet, name: '湿垃圾'},
+                                    {value: res.harm, name: '有害垃圾'},
+                                    {value: res.recycle, name: '可回收垃圾'}
+                                ],
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    },
+                                    normal: {
+                                        color: function (params) {
+                                            //自定义颜色
+                                            var colorList = [
+                                                '#DFDFDF', '#198FF9', '#EA2F41', '#F9A715'
+                                            ];
+                                            return colorList[params.dataIndex]
+                                        }
                                     }
-                                },
-                                {
-                                    value: 105, name: '湿垃圾', itemStyle: {
-                                        color: '#FF7F00'
-                                    }
-                                },
-                                {
-                                    value: 105, name: '有害垃圾', itemStyle: {}
-                                },
-                                {
-                                    value: 105, name: '可回收垃圾', itemStyle: {}
                                 }
-                            ]
-                        }
-                    ]
-                };
-                myChart.setOption(option)
+                            }
+                        ]
+                    };
+                    myChart.setOption(option, true)
+                });
+
             },
             rankingLin() {
                 let myChart = this.$echarts.init(document.getElementById('rankingLin'));
-                let option = {
-                    title: {
-                        text: '',
-                        subtext: ''
-                    },
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {
-                            type: 'shadow'
-                        }
-                    },
+                get_provinceThrowRank(this.params).then(res => {
+                    let yAxisData = [], seriesData = [];
+                    res.map(item => {
+                        yAxisData.push(item.province);
+                        seriesData.push(item.weight);
+                        return item;
+                    });
+                    myChart.clear();
+                    let option = {
+                        title: {
+                            text: '',
+                            subtext: ''
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
 
-                    grid: {
-                        top: 10,
-                        left: '13%',
-                        right: '10%',
-                        bottom: 0,
-                        containLabel: true
-                    },
-                    xAxis: {
-                        type: 'value',
-                        boundaryGap: [0, 0.01],
-                        axisLine: {
-                            lineStyle: {
-                                color: '#fff'
+                        grid: {
+                            top: 10,
+                            left: '13%',
+                            right: '10%',
+                            bottom: 0,
+                            containLabel: true
+                        },
+                        xAxis: {
+                            type: 'value',
+                            boundaryGap: [0, 0.01],
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#fff'
+                                }
                             }
-                        }
-                    },
-                    yAxis: {
-                        type: 'category',
-                        data: ['广东省', '山东省', '四川省', '湖南省', '湖北省', '海南省', '陕西省'],
-                        axisLine: {
-                            lineStyle: {
-                                color: '#fff'
+                        },
+                        yAxis: {
+                            type: 'category',
+                            data: yAxisData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#fff'
+                                }
                             }
-                        }
-                    },
-                    series: [
-                        {
-                            type: 'bar',
-                            data: [45, 52, 76, 89, 116, 122, 134],
-                            itemStyle: {
-                                color: '#FFE711'
+                        },
+                        series: [
+                            {
+                                type: 'bar',
+                                data: seriesData,
+                                itemStyle: {
+                                    color: '#FFE711'
+                                }
                             }
-                        }
-                    ]
-                };
-                myChart.setOption(option)
+                        ]
+                    };
+                    myChart.setOption(option, true)
+                });
+
             },
             cityLin() {
                 let myChart = this.$echarts.init(document.getElementById('cityLin'));
-                let option = {
-                    title: {
-                        text: '',
-                        subtext: ''
-                    },
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {
-                            type: 'shadow'
-                        }
-                    },
+                get_cityOrderRank(this.params).then(res => {
+                    let xAxisData = [], seriesData = [];
+                    res.map(item => {
+                        xAxisData.push(item.city);
+                        seriesData.push(item.amount);
+                        return item;
+                    });
+                    myChart.clear();
+                    let option = {
+                        title: {
+                            text: '',
+                            subtext: ''
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
 
-                    grid: {
-                        top: 10,
-                        left: '13%',
-                        right: '10%',
-                        bottom: 0,
-                        containLabel: true
-                    },
-                    yAxis: {
-                        type: 'value',
-                        boundaryGap: [0, 0.01],
-                        axisLine: {
-                            lineStyle: {
-                                color: '#fff'
+                        grid: {
+                            top: 10,
+                            left: '13%',
+                            right: '10%',
+                            bottom: 0,
+                            containLabel: true
+                        },
+                        yAxis: {
+                            type: 'value',
+                            boundaryGap: [0, 0.01],
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#fff'
+                                }
                             }
-                        }
-                    },
-                    xAxis: {
-                        type: 'category',
-                        data: ['成都', '重庆', '杭州', '北京', '深圳', '广州', '上海'],
-                        axisLine: {
-                            lineStyle: {
-                                color: '#fff'
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: xAxisData,
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#fff'
+                                }
                             }
-                        }
-                    },
-                    series: [
-                        {
-                            type: 'bar',
-                            data: [45, 52, 76, 89, 116, 122, 134],
-                            itemStyle: {
-                                color: '#FFE711'
+                        },
+                        series: [
+                            {
+                                type: 'bar',
+                                data: seriesData,
+                                itemStyle: {
+                                    color: '#FFE711'
+                                }
                             }
-                        }
-                    ]
-                };
-                myChart.setOption(option)
+                        ]
+                    };
+                    myChart.setOption(option, true)
+                });
+
             }
         }
     };
@@ -345,7 +428,6 @@
 <style rel="stylesheet/scss" lang="scss" scoped>
 
     .all {
-        /*background: linear-gradient(360deg, rgba(10, 32, 46, 1) 0%, rgba(1, 15, 106, 1) 100%);*/
         height: calc(100vh - 60px);
         padding-top: 70px;
 
@@ -457,7 +539,7 @@
             }
 
             .right1 {
-                height: 200px;
+                height: 220px;
                 margin-bottom: 20px;
                 position: relative;
             }
@@ -493,7 +575,6 @@
                 color: #fff;
                 display: flex;
                 padding: 0 50px;
-                padding-top: 30px;
                 padding-right: 30px;
                 width: 100%;
                 text-align: center;
@@ -505,7 +586,7 @@
 
                     p {
                         border-bottom: 1px solid #19FF9B;
-                        height: 22px;
+                        height: 20px;
                         line-height: 22px;
                     }
 

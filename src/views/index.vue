@@ -33,6 +33,9 @@
 
     import vPinyin from '@/utils/py/vue-py'
 
+    let pinyin = require('js-pinyin');
+
+    pinyin.setOptions({checkPolyphone: false, charCase: 0});
 
     export default {
         name: "index",
@@ -92,18 +95,23 @@
                     citySpell: vPinyin.chineseToPinYin(this.select.city).replace('Shi', ''),
                 };
                 this.isCity = true;
+                if (obj.citySpell == 'ShenChou') {
+                    obj = {
+                        ...obj,
+                        citySpell: 'ShenZhen'
+                    }
+                }
 
                 this.$store.commit('setParams', obj);
 
                 this.timer = setInterval(() => {
                     this.$store.commit('setLoadSetInterval', Math.random());
-                }, TIME_REFRESH);
 
+                }, TIME_REFRESH);
 
                 axios.get('http://restapi.amap.com/v3/geocode/geo?address=' + params + '&output=JSON&key=' + this.key).then(res => {
 
                     this.location = res.data.geocodes[0].location.split(',');
-
                 })
             }
         }

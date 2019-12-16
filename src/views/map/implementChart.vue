@@ -1,6 +1,6 @@
 <template>
     <div class="implement-content">
-        <p>广州各区分类部署实施效益折线图</p>
+        <p>{{allParams.city}}各区分类部署实施效益折线图</p>
         <div id="implementLine"></div>
     </div>
 </template>

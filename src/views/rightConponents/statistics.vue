@@ -1,6 +1,6 @@
 <template>
     <div class="statistics-content">
-        <p>广州市积分兑换订单统计</p>
+        <p>{{allParams.city}}积分兑换订单统计</p>
         <div class="table">
             <div>
                 <p>累计订单量</p>

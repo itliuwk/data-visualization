@@ -1,6 +1,6 @@
 <template>
     <div class="exchangeChart-content">
-        <p>广州积分兑换统计面积图</p>
+        <p>{{allParams.city}}积分兑换统计面积图</p>
         <div id="exchangeLine"></div>
     </div>
 </template>

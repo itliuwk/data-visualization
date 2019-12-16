@@ -1,6 +1,6 @@
 <template>
     <div class="community-content">
-        <p class="title">社区投放排名</p>
+        <p class="title">{{allParams.city}}社区投放排名</p>
         <div class="table-header">
             <p>社区名称</p>
             <p>参与人数</p>
@@ -53,10 +53,8 @@
         padding: 10px;
 
         .title {
-            width: 90px;
             height: 21px;
             font-size: 15px;
-            font-family: Source Han Sans CN;
             font-weight: 400;
             line-height: 21px;
             color: rgba(255, 255, 255, 1);
