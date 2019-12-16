@@ -101,9 +101,7 @@
                         citySpell: 'ShenZhen'
                     }
                 }
-
                 this.$store.commit('setParams', obj);
-
                 this.timer = setInterval(() => {
                     this.$store.commit('setLoadSetInterval', Math.random());
 
