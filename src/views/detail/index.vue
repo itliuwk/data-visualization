@@ -8,23 +8,12 @@
                     class="amap-demo">
                 <el-amap-marker v-for="marker in markers" :position="marker.position"
                                 :events="marker.events"></el-amap-marker>
-                <el-amap-info-window v-if="window" :position="window.position" :visible="window.visible"
-                                     :id="window.id">
-                    <!--                    <div style="width: 284px">-->
-                    <!--                        <p class="title"><span>{{detail.name}}</span><span>业主人数：{{detail.num}}</span></p>-->
-                    <!--                        <div class="info">-->
-                    <!--                            <img :src="detail.img" alt="">-->
-                    <!--                            <div class="address">-->
-                    <!--                                <p>地址：{{detail.address}}</p>-->
-                    <!--                                <p>-->
-                    <!--                                    <span style="padding-right: 20px">垃圾桶：{{detail.a}}台</span>-->
-                    <!--                                    <span>取货机：{{detail.b}}台</span>-->
-                    <!--                                </p>-->
-                    <!--                            </div>-->
-                    <!--                            <p class="to_detail" @click="toDetail(detail)">社区详情</p>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
-                </el-amap-info-window>
+                <!--                <el-amap-info-window v-if="window" :position="window.position" :visible="window.visible"-->
+                <!--                                     :id="window.id">-->
+                <!--                    <div style="width: 284px">-->
+                <!--                        123.log-->
+                <!--                    </div>-->
+                <!--                </el-amap-info-window>-->
             </el-amap>
         </div>
         <div class="table">
@@ -54,7 +43,7 @@
                     </el-table-column>
                     <el-table-column prop="temperature" label="桶内温度">
                         <template slot-scope="rubbishData">
-                            <span>{{rubbishData.row.temperature}}°</span>
+                            <span>{{rubbishData.row.temperature||0}}°</span>
                         </template>
                     </el-table-column>
                     <el-table-column prop="contactName" label="联系人"></el-table-column>
@@ -107,7 +96,7 @@
 
             </div>
             <div style="margin-top: 20px;">
-                <h4>番禺小区垃圾箱报警记录</h4>
+                <h4>{{this.detail.name}}报警记录</h4>
                 <el-table
                         :data="tableData"
                         style="width: 100%">
@@ -183,9 +172,6 @@
                 type: Object
             }
         },
-        created() {
-            this.init();
-        },
         computed: {
             rubbishPage: function () {
                 return parseInt(this.rubbishParams.from / this.rubbishParams.size) + 1;
@@ -199,30 +185,17 @@
         },
         mounted() {
             this.get_rubbish();
-            this.get_pickup();
             this.get_table();
+            this.mapInit();
         },
         methods: {
-            init() {
+            mapInit(mapData = []) {
                 let markers = [];
                 let windows = [];
                 this.center = this.detail.lnglat;
 
                 let self = this;
-                let points = [
-                    {
-                        id: 1,
-                        lnglat: [113.317361, 23.083454]
-                    },
-                    {
-                        id: 2,
-                        lnglat: [113.406473, 23.185547]
-                    },
-                    {
-                        id: 3,
-                        lnglat: [113.367379, 22.987006]
-                    }
-                ];
+                let points = mapData;
 
                 for (let i = 0; i < points.length; i++) {
                     markers.push({
@@ -251,31 +224,43 @@
                 this.markers = markers;
                 this.windows = windows;
             },
-            get_rubbish() {
+            async get_rubbish() {
                 let params = {
                     locationId: this.detail.id,
                     typeId: 'rubbish',
                     ...this.rubbishParams
                 };
-                get_locationDevice(params).then(res => {
-                    this.rubbishData = res;
-                });
-                get_locationDevice_count(params).then(res => {
-                    this.rubbishCount = res;
-                });
-            },
-            get_pickup() {
-                let params = {
+                let pickupParams = {
                     locationId: this.detail.id,
                     typeId: 'pickup',
                     ...this.pickupParams
                 };
-                get_locationDevice(params).then(res => {
-                    this.pickupData = res;
-                });
                 get_locationDevice_count(params).then(res => {
+                    this.rubbishCount = res;
+                });
+                get_locationDevice_count(pickupParams).then(res => {
                     this.pickupCount = res;
                 });
+
+                let rubbishData = await get_locationDevice(params);
+                let pickupData = await get_locationDevice(pickupParams);
+                this.rubbishData = rubbishData;
+                this.pickupData = pickupData;
+
+                rubbishData.map(item => {
+                    item.lnglat = [item.longitude, item.latitude];
+                    item.type = 'rubbish';
+                    return item;
+                });
+                pickupData.map(item => {
+                    item.lnglat = [item.longitude, item.latitude];
+                    item.type = 'pickup';
+                    return item;
+                });
+                let mapData = [...pickupData, ...rubbishData];
+
+                // this.mapInit(mapData);
+
             },
             get_table() {
                 Date.prototype.Format = function (fmt) { //author: meizz
@@ -322,7 +307,7 @@
                     from: parseInt(res - 1) * this.pickupParams.size,
                     size: 5,
                 };
-                this.get_pickup()
+                this.get_rubbish()
             },
             currentTableChange(res) {//翻页
                 this.tableParams = {
