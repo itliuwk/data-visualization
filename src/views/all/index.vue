@@ -119,6 +119,7 @@
                 device: {},
                 summary: {},
                 title: '全国',
+                filters: ['内蒙古自治区', '广西壮族自治区', '西藏自治区', '宁夏回族自治区', '新疆维吾尔自治区', '香港特别行政区', '澳门特别行政区'],
                 params: {
                     province: '',
                     provinceSpell: ''
@@ -182,7 +183,7 @@
                 };
                 this.map.setOption(option);
                 this.map.on('click', function (params) {
-                    // Alert.success(params.name);
+
                     let data = [
                         {
                             name: params.name, selected: true
@@ -193,12 +194,21 @@
                             data = [];
                         }
                     }
+                    let province = '';
                     if (data.length) {
+
+                        for (let k = 0; k < that.filters.length; k++) {
+                            let filter = that.filters[k];
+                            if (filter.indexOf(params.name) != -1) {
+                                province = filter
+                            }
+                        }
+                        province = province ? province : params.name + '省'
                         that.params = {
-                            province: data[0].name + '省',
-                            provinceSpell: vPinyin.chineseToPinYin(data[0].name)
+                            province: province,
+                            provinceSpell: vPinyin.chineseToPinYin(province)
                         };
-                        that.title = data[0].name
+                        that.title = province
                     } else {
                         that.params = {
                             province: '',
