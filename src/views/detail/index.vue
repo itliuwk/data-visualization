@@ -10,98 +10,132 @@
                                 :events="marker.events"></el-amap-marker>
                 <el-amap-info-window v-if="window" :position="window.position" :visible="window.visible"
                                      :id="window.id">
-<!--                    <div style="width: 284px">-->
-<!--                        <p class="title"><span>{{detail.name}}</span><span>业主人数：{{detail.num}}</span></p>-->
-<!--                        <div class="info">-->
-<!--                            <img :src="detail.img" alt="">-->
-<!--                            <div class="address">-->
-<!--                                <p>地址：{{detail.address}}</p>-->
-<!--                                <p>-->
-<!--                                    <span style="padding-right: 20px">垃圾桶：{{detail.a}}台</span>-->
-<!--                                    <span>取货机：{{detail.b}}台</span>-->
-<!--                                </p>-->
-<!--                            </div>-->
-<!--                            <p class="to_detail" @click="toDetail(detail)">社区详情</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <!--                    <div style="width: 284px">-->
+                    <!--                        <p class="title"><span>{{detail.name}}</span><span>业主人数：{{detail.num}}</span></p>-->
+                    <!--                        <div class="info">-->
+                    <!--                            <img :src="detail.img" alt="">-->
+                    <!--                            <div class="address">-->
+                    <!--                                <p>地址：{{detail.address}}</p>-->
+                    <!--                                <p>-->
+                    <!--                                    <span style="padding-right: 20px">垃圾桶：{{detail.a}}台</span>-->
+                    <!--                                    <span>取货机：{{detail.b}}台</span>-->
+                    <!--                                </p>-->
+                    <!--                            </div>-->
+                    <!--                            <p class="to_detail" @click="toDetail(detail)">社区详情</p>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
                 </el-amap-info-window>
             </el-amap>
         </div>
         <div class="table">
             <div>
                 <el-table
-                        :data="tableData"
+                        :data="rubbishData"
                         style="width: 100%">
                     <el-table-column prop="name" label="垃圾箱设备信息"></el-table-column>
                     <el-table-column prop="id" label="编号"></el-table-column>
-                    <el-table-column prop="type" label="场地地址"></el-table-column>
-                    <el-table-column prop="type" label="垃圾箱类型"></el-table-column>
-                    <el-table-column prop="state" label="状态"></el-table-column>
-                    <el-table-column prop="name" label="满溢情况">
-                        <template slot-scope="tableData">
-                            <span>未满溢</span>
+                    <el-table-column prop="type" label="场地地址">
+                        <template slot-scope="rubbishData">
+                            <span>{{rubbishData.row.locationName}}</span>
+                            <span v-if="rubbishData.row.province">{{rubbishData.row.province+rubbishData.row.city+rubbishData.row.district+rubbishData.row.street}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="name" label="桶内温度">
-                        <template slot-scope="tableData">
-                            <span>29°</span>
+                    <el-table-column prop="active" label="状态">
+                        <template slot-scope="rubbishData">
+                            <span v-if="rubbishData.row.active">在线</span>
+                            <span v-else>离线</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="name" label="联系人">
-                        <template slot-scope="tableData">
-                            <span>刘伟坤</span>
+                    <el-table-column prop="full" label="满溢情况">
+                        <template slot-scope="rubbishData">
+                            <span v-if="rubbishData.row.full">满溢</span>
+                            <span v-else>未满溢</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="name" label="联系人电话">
-                        <template slot-scope="tableData">
-                            <span>13502520162</span>
+                    <el-table-column prop="temperature" label="桶内温度">
+                        <template slot-scope="rubbishData">
+                            <span>{{rubbishData.row.temperature}}°</span>
                         </template>
                     </el-table-column>
+                    <el-table-column prop="contactName" label="联系人"></el-table-column>
+                    <el-table-column prop="contactMobile" label="联系人电话"></el-table-column>
                 </el-table>
+                <el-pagination
+                        background
+                        :page-size="rubbishParams.size"
+                        layout="total,prev, pager, next"
+                        :total="rubbishCount"
+                        :page-count="rubbishPage"
+                        @current-change="currentChange"
+                >
+                </el-pagination>
             </div>
             <div style="margin-top: 20px;">
                 <el-table
-                        :data="tableData"
+                        :data="pickupData"
                         style="width: 100%">
                     <el-table-column prop="name" label="取货机设备信息"></el-table-column>
                     <el-table-column prop="id" label="编号"></el-table-column>
-                    <el-table-column prop="id" label="场地地址"></el-table-column>
+                    <el-table-column prop="locationName" label="场地地址">
+                        <template slot-scope="pickupData">
+                            <span>{{pickupData.row.locationName}}</span>
+                            <span v-if="pickupData.row.province">{{pickupData.row.province+pickupData.row.city+pickupData.row.district+pickupData.row.street}}</span>
+                        </template>
+                    </el-table-column>
                     >
-                    <el-table-column prop="state" label="状态"></el-table-column>
+                    <el-table-column prop="state" label="状态">
+                        <template slot-scope="pickupData">
+                            <span v-if="pickupData.row.active">在线</span>
+                            <span v-else>离线</span>
+                        </template>
+                    </el-table-column>
                     <!--                    <el-table-column prop="state" label="下辖商品数"></el-table-column>-->
                     <!--                    <el-table-column prop="state" label="库存情况"></el-table-column>-->
 
-                    <el-table-column prop="name" label="联系人">
-                        <template slot-scope="tableData">
-                            <span>刘伟坤</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="name" label="联系人电话">
-                        <template slot-scope="tableData">
-                            <span>13502520162</span>
-                        </template>
-                    </el-table-column>
+                    <el-table-column prop="contactName" label="联系人"></el-table-column>
+                    <el-table-column prop="contactMobile" label="联系人电话"></el-table-column>
                 </el-table>
+                <el-pagination
+                        background
+                        :page-size="pickupParams.size"
+                        layout="total,prev, pager, next"
+                        :total="pickupCount"
+                        :page-count="pickupPage"
+                        @current-change="currentPickupChange"
+                >
+                </el-pagination>
+
             </div>
             <div style="margin-top: 20px;">
                 <h4>番禺小区垃圾箱报警记录</h4>
                 <el-table
-                        :data="list"
+                        :data="tableData"
                         style="width: 100%">
                     <el-table-column prop="name" label="报警信息"></el-table-column>
-                    <el-table-column prop="date" label="报警时间"></el-table-column>
-                    <el-table-column prop="date" label="接触时间"></el-table-column>
+                    <el-table-column prop="createdDate" label="报警时间"></el-table-column>
+                    <el-table-column prop="solveDate" label="解除时间"></el-table-column>
                     <el-table-column prop="name" label="报警等级">
-                        <template slot-scope="list">
+                        <template slot-scope="tableData">
                             <span class="level">紧急</span>
+                            <span>{{tableData.row.grade}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column prop="name" label="报警状态">
-                        <template slot-scope="list">
+                        <template slot-scope="tableData">
                             <span>已解除</span>
+                            <span>{{tableData.row.state}}</span>
                         </template>
                     </el-table-column>
                 </el-table>
+                <el-pagination
+                        background
+                        :page-size="tableParams.size"
+                        layout="total,prev, pager, next"
+                        :total="tableCount"
+                        :page-count="tablePage"
+                        @current-change="currentTableChange"
+                >
+                </el-pagination>
             </div>
         </div>
     </div>
@@ -110,6 +144,9 @@
 
 
 <script>
+    import {get_locationDevice, get_locationDevice_count, get_rubbishAlert, get_rubbishAlert_count} from '@/api/detail'
+
+
     export default {
         data: function () {
             return {
@@ -118,47 +155,24 @@
                 markers: [],
                 windows: [],
                 window: '',
-                // detail: {
-                //     name: '番禺小区',
-                //     num: 1000,
-                //     address: "广东省广州市番禺区市桥红 袋鼠路新华街水泥砖小区7街901",
-                //     a: 10,
-                //     b: 8,
-                //     img: 'https://cdn.renqilai.com/2019_12_09/11_12_03_xiaoqu.png'
-                //
-                // },
-
-                tableData: [{
-                    id: '6526351616',
-                    name: '垃圾箱1',
-                    type: '干垃圾箱',
-                    state: '在线',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                    id: '5464564534',
-                    date: '2016-05-04',
-                    name: '垃圾箱2',
-                    address: '上海市普陀区金沙江路 1517 弄'
-                }, {
-                    id: '2345464234',
-                    date: '2016-05-01',
-                    name: '垃圾箱3',
-                    address: '上海市普陀区金沙江路 1519 弄'
-                }, {
-                    id: '3456546422',
-                    date: '2016-05-03',
-                    name: '垃圾箱4',
-                    address: '上海市普陀区金沙江路 1516 弄'
-                }],
-                list: [
-                    {
-                        id: '6526351616',
-                        name: 'A016高温报警',
-                        date: '2019-12-9 18:40:58',
-                        type: '干垃圾箱',
-                        state: '在线'
-                    }
-                ]
+                rubbishData: [],
+                rubbishCount: 0,
+                rubbishParams: {
+                    size: 5,
+                    from: 0
+                },
+                pickupData: [],
+                pickupCount: 0,
+                pickupParams: {
+                    size: 5,
+                    from: 0
+                },
+                tableData: [],
+                tableCount: 0,
+                tableParams: {
+                    size: 5,
+                    from: 0
+                },
             };
         },
         props: {
@@ -169,25 +183,30 @@
                 type: Object
             }
         },
-        watch: {
-            location() {
-                this.loading = true;
-                this.center = this.location;
-                this.zoom = 10;
-                this.init();
-
-            }
-        },
         created() {
             this.init();
         },
+        computed: {
+            rubbishPage: function () {
+                return parseInt(this.rubbishParams.from / this.rubbishParams.size) + 1;
+            },
+            pickupPage: function () {
+                return parseInt(this.pickupParams.from / this.pickupParams.size) + 1;
+            },
+            tablePage: function () {
+                return parseInt(this.tableParams.from / this.tableParams.size) + 1;
+            },
+        },
         mounted() {
-
+            this.get_rubbish();
+            this.get_pickup();
+            this.get_table();
         },
         methods: {
             init() {
                 let markers = [];
                 let windows = [];
+                this.center = this.detail.lnglat;
 
                 let self = this;
                 let points = [
@@ -232,12 +251,87 @@
                 this.markers = markers;
                 this.windows = windows;
             },
-            toDetail(id) {
-                console.log(id);
+            get_rubbish() {
+                let params = {
+                    locationId: this.detail.id,
+                    typeId: 'rubbish',
+                    ...this.rubbishParams
+                };
+                get_locationDevice(params).then(res => {
+                    this.rubbishData = res;
+                });
+                get_locationDevice_count(params).then(res => {
+                    this.rubbishCount = res;
+                });
             },
-            mapClick() {
-                alert(123)
-            }
+            get_pickup() {
+                let params = {
+                    locationId: this.detail.id,
+                    typeId: 'pickup',
+                    ...this.pickupParams
+                };
+                get_locationDevice(params).then(res => {
+                    this.pickupData = res;
+                });
+                get_locationDevice_count(params).then(res => {
+                    this.pickupCount = res;
+                });
+            },
+            get_table() {
+                Date.prototype.Format = function (fmt) { //author: meizz
+                    var o = {
+                        "M+": this.getMonth() + 1,                 //月份
+                        "d+": this.getDate(),                    //日
+                        "h+": this.getHours(),                   //小时
+                        "m+": this.getMinutes(),                 //分
+                        "s+": this.getSeconds(),                 //秒
+                        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                        "S": this.getMilliseconds()             //毫秒
+                    };
+                    if (/(y+)/.test(fmt))
+                        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+                    for (var k in o)
+                        if (new RegExp("(" + k + ")").test(fmt))
+                            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                    return fmt;
+                };
+                let params = {
+                    locationId: this.detail.id,
+                    ...this.tableParams
+                };
+                get_rubbishAlert(params).then(res => {
+                    res.createdDate = new Date(res.createdDate).Format("yyyy-MM-dd hh:mm:ss");
+                    res.solveDate = new Date(res.solveDate).Format("yyyy-MM-dd hh:mm:ss");
+                    this.tableData = res;
+                });
+                get_rubbishAlert_count(params).then(res => {
+                    this.tableCount = res;
+                });
+            },
+            currentChange(res) {//翻页
+                this.rubbishParams = {
+                    ...this.rubbishParams,
+                    from: parseInt(res - 1) * this.rubbishParams.size,
+                    size: 5,
+                };
+                this.get_rubbish()
+            },
+            currentPickupChange(res) {//翻页
+                this.pickupParams = {
+                    ...this.pickupParams,
+                    from: parseInt(res - 1) * this.pickupParams.size,
+                    size: 5,
+                };
+                this.get_pickup()
+            },
+            currentTableChange(res) {//翻页
+                this.tableParams = {
+                    ...this.tableParams,
+                    from: parseInt(res - 1) * this.tableParams.size,
+                    size: 5,
+                };
+                this.get_table()
+            },
         }
     };
 </script>
@@ -319,6 +413,7 @@
         .table {
             flex: 2;
             margin-left: 20px;
+            overflow: auto;
 
             .level {
                 padding: 5px 10px;

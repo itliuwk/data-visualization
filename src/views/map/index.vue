@@ -69,8 +69,7 @@
         watch: {
             location() {
                 this.loading = true;
-                this.center = this.location;
-                this.zoom = 10;
+
             }
         },
         components: {
