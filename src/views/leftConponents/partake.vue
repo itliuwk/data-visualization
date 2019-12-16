@@ -23,7 +23,7 @@
                 <span>公斤</span>
             </div>
             <div class="info">
-                <p>上月添加：{{partake.rubbish.add||0}} 人</p>
+                <p>上月添加：{{partake.rubbish.add||0}} 公斤</p>
                 <p>环比增涨：{{partake.rubbish.increase| toRate2}}</p>
             </div>
         </div>
@@ -36,7 +36,7 @@
                 <span>个</span>
             </div>
             <div class="info">
-                <p>上月添加：{{partake.order.add||0}} 人</p>
+                <p>上月添加：{{partake.order.add||0}} 个</p>
                 <p>环比增涨：{{partake.order.increase| toRate2}}</p>
             </div>
         </div>

@@ -28,6 +28,7 @@
                         pickups.push(item.pickup);
                         return item;
                     });
+                    myChart.clear();
                     let option = {
                         title: {
                             text: '',
@@ -103,7 +104,7 @@
                         ]
                     };
 
-                    myChart.setOption(option)
+                    myChart.setOption(option,true)
 
                 });
 

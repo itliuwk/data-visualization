@@ -7,11 +7,18 @@
             <p>总投放质量</p>
             <p>可回收占比</p>
         </div>
-        <div class="table-content" v-for="(item,index) in table" :key="index">
-            <p class="locationName" :title="item.locationName">{{item.locationName}}</p>
-            <p class="color">{{item.customer}}</p>
-            <p class="color">{{item.weight}}</p>
-            <p class="color">{{item.recycle}}%</p>
+
+        <template v-for="(item,index) in table">
+            <div class="table-content" v-if="table.length" :key="index">
+                <p class="locationName" :title="item.locationName">{{item.locationName}}</p>
+                <p class="color">{{item.customer}}</p>
+                <p class="color">{{item.weight}}</p>
+                <p class="color">{{item.recycle}}%</p>
+
+            </div>
+        </template>
+        <div v-if="!table.length" class="not-data">
+            暂无数据...
         </div>
     </div>
 </template>
@@ -78,6 +85,13 @@
 
         .table-content {
             margin-bottom: 5px;
+        }
+
+        .not-data {
+            text-align: center;
+            color: #fff;
+            padding-top: 15px;
+            font-size: 14px;
         }
 
     }

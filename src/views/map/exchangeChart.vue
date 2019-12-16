@@ -28,6 +28,7 @@
                         profit.push(item.profit);
                         return item;
                     });
+                    myChart.clear();
                     let option = {
                         title: {
                             text: ''
@@ -83,7 +84,7 @@
                                 type: 'line',
                                 stack: '总量',
                                 areaStyle: {},
-                                data:cost,
+                                data: cost,
                                 itemStyle: {
                                     color: '#59DD01'
                                 }
@@ -112,7 +113,7 @@
                     };
 
 
-                    myChart.setOption(option)
+                    myChart.setOption(option, true)
                 });
 
             }

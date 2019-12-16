@@ -7,16 +7,16 @@
                 <div class="conversionRate">
                     <div>
                         <p>下单转换率</p>
-                        <p>85.24%</p>
+                        <p>{{detail.create / detail.customer * 100 |toFixed}}%</p>
                     </div>
                     <div>
                         <p>付款转化率</p>
-                        <p>56.18%</p>
+                        <p>{{detail.paid / detail.create * 100 |toFixed}}%</p>
                     </div>
                 </div>
                 <div class="deal">
                     <p>成交转化率</p>
-                    <p>75.91%</p>
+                    <p>{{detail.paid / detail.customer * 100 |toFixed}}%</p>
                 </div>
             </div>
         </div>
@@ -49,6 +49,7 @@
                 let myChart = this.$echarts.init(document.getElementById('funnel'));
                 get_orderCustomerSummary(this.allParams).then(res => {
                     this.detail = res;
+                    myChart.clear();
                     let option = {
                         title: {
                             text: '累计转换率',
@@ -107,10 +108,18 @@
                         ]
                     };
 
-                    myChart.setOption(option)
+                    myChart.setOption(option,true)
                 });
 
 
+            }
+        },
+        filters: {
+            toFixed(val) {
+                if (isNaN(val)){
+                    return  '0.00'
+                }
+                return val.toFixed(2)
             }
         }
     }

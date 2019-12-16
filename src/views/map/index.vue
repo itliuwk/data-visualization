@@ -10,27 +10,32 @@
                             :events="marker.events"></el-amap-marker>
             <el-amap-info-window v-if="window" :position="window.position" :visible="window.visible" :id="window.id">
                 <div style="width: 284px">
-                    <p class="title"><span>{{detail.name}}</span><span>业主人数：{{detail.num}}</span></p>
+                    <p class="title">
+                        <span>{{window.detail.name}}</span>
+                        <!--                        <span>业主人数：{{detail.num}}</span>-->
+                    </p>
                     <div class="info">
-                        <img :src="detail.img" alt="">
+                        <img :src="window.detail.image" alt="">
                         <div class="address">
-                            <p>地址：{{detail.address}}</p>
                             <p>
-                                <span style="padding-right: 20px">垃圾桶：{{detail.a}}台</span>
-                                <span>取货机：{{detail.b}}台</span>
+                                地址：{{window.detail.province+window.detail.city+window.detail.district+window.detail.street}}</p>
+                            <p>
+                                <span style="padding-right: 20px">垃圾桶：{{window.detail.rubbish}}台</span>
+                                <span>取货机：{{window.detail.pickup}}台</span>
                             </p>
                         </div>
-                        <p class="to_detail" @click="toDetail(detail)">社区详情</p>
+                        <p class="to_detail" @click="toDetail(window.detail)">社区详情</p>
                     </div>
                 </div>
             </el-amap-info-window>
         </el-amap>
 
         <el-dialog
+                :title="detail.name"
                 top="20px"
                 :visible.sync="isDetail"
                 width="80%">
-            <detail v-if="isDetail"></detail>
+            <detail v-if="isDetail" :detail="detail"></detail>
         </el-dialog>
 
 
@@ -40,6 +45,9 @@
 
 <script>
     import Detail from '../detail/index'
+    import {get_location} from '@/api/index'
+    import mixins from "@/mixins/index.js";
+    //        mixins: [mixins],
 
     export default {
         data: function () {
@@ -49,15 +57,7 @@
                 markers: [],
                 windows: [],
                 window: '',
-                detail: {
-                    name: '番禺小区',
-                    num: 1000,
-                    address: "广东省广州市番禺区市桥红 袋鼠路新华街水泥砖小区7街901",
-                    a: 10,
-                    b: 8,
-                    img: 'https://cdn.renqilai.com/2019_12_09/11_12_03_xiaoqu.png'
-
-                },
+                detail: {},
                 isDetail: false
             };
         },
@@ -71,73 +71,59 @@
                 this.loading = true;
                 this.center = this.location;
                 this.zoom = 10;
-                this.init();
-
             }
         },
         components: {
             Detail
         },
-        created() {
-            this.init();
-        },
-        mounted() {
-
-        },
+        mixins: [mixins],
         methods: {
             init() {
-                let markers = [];
-                let windows = [];
+                get_location(this.allParams).then(res => {
+                    res.map(item => {
+                        item.lnglat = [item.longitude, item.latitude];
+                        return item;
+                    });
 
-                let self = this;
-                let points = [
-                    {
-                        id: 1,
-                        lnglat: [113.317361, 23.083454]
-                    },
-                    {
-                        id: 2,
-                        lnglat: [113.406473, 23.185547]
-                    },
-                    {
-                        id: 3,
-                        lnglat: [113.367379, 22.987006]
-                    }
-                ];
+                    let markers = [];
+                    let windows = [];
 
-                for (let i = 0; i < points.length; i++) {
-                    markers.push({
-                        position: points[i].lnglat,
-                        events: {
-                            click() {
-                                self.windows.forEach(window => {
-                                    window.visible = false;
-                                });
+                    let self = this;
+                    let points = res;
 
-                                self.window = self.windows[i];
-                                self.$nextTick(() => {
-                                    self.window.visible = true;
-                                });
+                    for (let i = 0; i < points.length; i++) {
+                        markers.push({
+                            position: points[i].lnglat,
+                            events: {
+                                click() {
+                                    self.windows.forEach(window => {
+                                        window.visible = false;
+                                    });
+
+                                    self.window = self.windows[i];
+                                    self.$nextTick(() => {
+                                        self.window.visible = true;
+                                    });
+                                }
                             }
-                        }
-                    });
+                        });
 
-                    windows.push({
-                        position: points[i].lnglat,
-                        visible: false,
-                        id: points[i].id
-                    });
-                }
+                        windows.push({
+                            position: points[i].lnglat,
+                            visible: false,
+                            id: points[i].id,
+                            detail: points[i]
+                        });
+                    }
 
-                this.markers = markers;
-                this.windows = windows;
+                    this.markers = markers;
+                    this.windows = windows;
+                });
+
             },
-            toDetail(id) {
+            toDetail(item) {
                 this.isDetail = true;
-                console.log(id);
-            },
-            mapClick() {
-                alert(123)
+                this.detail = item;
             }
         }
     };

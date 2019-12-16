@@ -33,7 +33,7 @@
                         return item;
                     });
 
-
+                    myChart.clear();
                     let option = {
                         title: {
                             text: ''
@@ -71,9 +71,10 @@
                             type: 'value',
                             offset: -10,
                             left: '3%',
-                            name: '累计投放质量（KG）',
+                            name: '质量（KG）',
                             nameTextStyle: {
-                                color: '#fff'
+                                color: '#fff',
+                                paddingLeft:20
                             },
                             axisLine: {
                                 lineStyle: {
@@ -83,9 +84,9 @@
                         },
                         series: seriesData
                     };
+                    myChart.setOption(option, true);
 
 
-                    myChart.setOption(option)
                 });
 
             }

@@ -54,6 +54,7 @@
             },
             overflowPie() {
                 let myChart = this.$echarts.init(document.getElementById('overflowPie'));
+                myChart.clear();
                 let option = {
                     tooltip: {
                         trigger: 'item',
@@ -107,10 +108,11 @@
                         }
                     ]
                 };
-                myChart.setOption(option)
+                myChart.setOption(option,true)
             },
             dustbinDevOpsPie() {
                 let myChart = this.$echarts.init(document.getElementById('dustbinDevOpsPie'));
+                myChart.clear();
                 let option = {
                     tooltip: {
                         trigger: 'item',
@@ -164,10 +166,11 @@
                         }
                     ]
                 };
-                myChart.setOption(option)
+                myChart.setOption(option,true)
             },
             pickDevOpsPie() {
                 let myChart = this.$echarts.init(document.getElementById('pickDevOpsPie'));
+                myChart.clear();
                 let option = {
                     tooltip: {
                         trigger: 'item',
@@ -221,7 +224,7 @@
                         }
                     ]
                 };
-                myChart.setOption(option)
+                myChart.setOption(option,true)
             },
         }
     }

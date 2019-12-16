@@ -27,6 +27,7 @@
 
                 if (this.tab == 1) {
                     get_todayThrow(this.allParams).then(res => {
+                        myChart.clear();
                         let option = {
                             title: {
                                 text: '',
@@ -78,10 +79,11 @@
                             ]
                         };
 
-                        myChart.setOption(option);
+                        myChart.setOption(option,true);
                     });
                 } else if (this.tab == 2) {
                     get_allThrow(this.allParams).then(res => {
+                        myChart.clear();
                         let option = {
                             title: {
                                 text: '',
@@ -133,7 +135,7 @@
                             ]
                         };
 
-                        myChart.setOption(option);
+                        myChart.setOption(option,true);
                     });
                 }
             },

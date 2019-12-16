@@ -135,3 +135,32 @@ export function get_orderCustomerSummary(params) {
         params,
     }).then(res => res.data.data)
 }
+
+
+/**
+ * 垃圾数据面板 / 积分兑换订单统计
+ * @param params
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export function get_cityOrderSummary(params) {
+    return request({
+        url: '/rb/api/board/cityOrderSummary',
+        method: 'get',
+        params,
+    }).then(res => res.data.data)
+}
+
+
+
+/**
+ * 垃圾数据面板 / 地图社区位置和设备信息
+ * @param params
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export function get_location(params) {
+    return request({
+        url: '/rb/api/board/location',
+        method: 'get',
+        params,
+    }).then(res => res.data.data)
+}

@@ -10,20 +10,20 @@
                                 :events="marker.events"></el-amap-marker>
                 <el-amap-info-window v-if="window" :position="window.position" :visible="window.visible"
                                      :id="window.id">
-                    <div style="width: 284px">
-                        <p class="title"><span>{{detail.name}}</span><span>业主人数：{{detail.num}}</span></p>
-                        <div class="info">
-                            <img :src="detail.img" alt="">
-                            <div class="address">
-                                <p>地址：{{detail.address}}</p>
-                                <p>
-                                    <span style="padding-right: 20px">垃圾桶：{{detail.a}}台</span>
-                                    <span>取货机：{{detail.b}}台</span>
-                                </p>
-                            </div>
-                            <p class="to_detail" @click="toDetail(detail)">社区详情</p>
-                        </div>
-                    </div>
+<!--                    <div style="width: 284px">-->
+<!--                        <p class="title"><span>{{detail.name}}</span><span>业主人数：{{detail.num}}</span></p>-->
+<!--                        <div class="info">-->
+<!--                            <img :src="detail.img" alt="">-->
+<!--                            <div class="address">-->
+<!--                                <p>地址：{{detail.address}}</p>-->
+<!--                                <p>-->
+<!--                                    <span style="padding-right: 20px">垃圾桶：{{detail.a}}台</span>-->
+<!--                                    <span>取货机：{{detail.b}}台</span>-->
+<!--                                </p>-->
+<!--                            </div>-->
+<!--                            <p class="to_detail" @click="toDetail(detail)">社区详情</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </el-amap-info-window>
             </el-amap>
         </div>
@@ -65,10 +65,11 @@
                         style="width: 100%">
                     <el-table-column prop="name" label="取货机设备信息"></el-table-column>
                     <el-table-column prop="id" label="编号"></el-table-column>
-                    <el-table-column prop="id" label="场地地址"></el-table-column>>
+                    <el-table-column prop="id" label="场地地址"></el-table-column>
+                    >
                     <el-table-column prop="state" label="状态"></el-table-column>
-<!--                    <el-table-column prop="state" label="下辖商品数"></el-table-column>-->
-<!--                    <el-table-column prop="state" label="库存情况"></el-table-column>-->
+                    <!--                    <el-table-column prop="state" label="下辖商品数"></el-table-column>-->
+                    <!--                    <el-table-column prop="state" label="库存情况"></el-table-column>-->
 
                     <el-table-column prop="name" label="联系人">
                         <template slot-scope="tableData">
@@ -117,15 +118,15 @@
                 markers: [],
                 windows: [],
                 window: '',
-                detail: {
-                    name: '番禺小区',
-                    num: 1000,
-                    address: "广东省广州市番禺区市桥红 袋鼠路新华街水泥砖小区7街901",
-                    a: 10,
-                    b: 8,
-                    img: 'https://cdn.renqilai.com/2019_12_09/11_12_03_xiaoqu.png'
-
-                },
+                // detail: {
+                //     name: '番禺小区',
+                //     num: 1000,
+                //     address: "广东省广州市番禺区市桥红 袋鼠路新华街水泥砖小区7街901",
+                //     a: 10,
+                //     b: 8,
+                //     img: 'https://cdn.renqilai.com/2019_12_09/11_12_03_xiaoqu.png'
+                //
+                // },
 
                 tableData: [{
                     id: '6526351616',
@@ -163,6 +164,9 @@
         props: {
             location: {
                 type: Array
+            },
+            detail: {
+                type: Object
             }
         },
         watch: {
