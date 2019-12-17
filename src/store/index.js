@@ -11,7 +11,8 @@ export default new Vuex.Store({
             city: '广州市',
             citySpell: 'GuangZhou',
         },
-        loadSetInterval: 0
+        loadSetInterval: 0,
+        province: ''
     },
     mutations: {
         setParams(state, params) {
@@ -19,6 +20,10 @@ export default new Vuex.Store({
         },
         setLoadSetInterval(state, params) {
             state.loadSetInterval = params;
+        },
+        setProvince(state, params) {
+            console.log(params);
+            state.province = params;
         }
     },
     actions: {},

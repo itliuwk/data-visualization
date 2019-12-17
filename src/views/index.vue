@@ -10,8 +10,8 @@
         </div>
 
         <div class="">
-            <City v-if="isCity" :location="location"></City>
-            <All v-else></All>
+            <City v-show="isCity" :location="location" :loadData="loadData"></City>
+            <All v-if="!isCity"></All>
         </div>
 
 
@@ -46,7 +46,7 @@
                 location: [],
                 isCity: true,
                 key: key,
-                loadSetInterval: 0,
+                loadData: 0,
                 timer: null
             }
         },
@@ -75,6 +75,7 @@
             view() {
                 if (this.select.province == '全国') {
                     clearInterval(this.timer);
+                    this.loadData = Math.random();
                     this.isCity = false;
                     return false;
                 }
@@ -101,9 +102,10 @@
                         citySpell: 'ShenZhen'
                     }
                 }
+                this.loadData = Math.random();
                 this.$store.commit('setParams', obj);
                 this.timer = setInterval(() => {
-                    this.$store.commit('setLoadSetInterval', Math.random());
+                    this.$store.commit('setLoadSetInterval',);
 
                 }, TIME_REFRESH);
 

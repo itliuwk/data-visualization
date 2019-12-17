@@ -3,32 +3,32 @@
         <div class="content">
             <div class="left">
                 <div class="partake">
-                    <Partake></Partake>
+                    <Partake :loadData="loadData"></Partake>
                 </div>
                 <div class="pie-chart">
-                    <PieChart></PieChart>
+                    <PieChart  :loadData="loadData"></PieChart>
                 </div>
                 <div class="community">
-                    <Community></Community>
+                    <Community  :loadData="loadData"></Community>
                 </div>
             </div>
             <div class="midden">
-                <Map :location="location"></Map>
-                <ImplementChart></ImplementChart>
-                <ExchangeChart></ExchangeChart>
+                <Map :location="location"  :loadSetInterval="loadData"></Map>
+                <ImplementChart  :loadData="loadData"></ImplementChart>
+                <ExchangeChart  :loadData="loadData"></ExchangeChart>
             </div>
             <div class="right">
                 <div class="distribution">
-                    <Distribution></Distribution>
+                    <Distribution  :loadData="loadData"></Distribution>
                 </div>
                 <div class="monitor">
-                    <Monitor></Monitor>
+                    <Monitor  :loadData="loadData"></Monitor>
                 </div>
                 <div class="conversion">
-                    <Conversion></Conversion>
+                    <Conversion  :loadData="loadData"></Conversion>
                 </div>
                 <div class="statistics">
-                    <Statistics></Statistics>
+                    <Statistics  :loadData="loadData"></Statistics>
                 </div>
             </div>
         </div>
@@ -51,6 +51,7 @@
     import Statistics from '../rightConponents/statistics'
 
     import Alert from '@/utils/message'
+
     export default {
         name: "index",
         data() {
@@ -64,7 +65,8 @@
         props: {
             location: {
                 type: Array
-            }
+            },
+            loadData: {}
         },
         components: {
             Partake,
