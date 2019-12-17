@@ -105,7 +105,7 @@
                 this.loadData = Math.random();
                 this.$store.commit('setParams', obj);
                 this.timer = setInterval(() => {
-                    this.$store.commit('setLoadSetInterval',);
+                    this.$store.commit('setLoadSetInterval',Math.random());
 
                 }, TIME_REFRESH);
 
