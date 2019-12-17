@@ -203,12 +203,12 @@
                                 province = filter
                             }
                         }
-                        province = province ? province : params.name + '省'
+                        province = province ? province : params.name + '省';
                         that.params = {
-                            province: province,
-                            provinceSpell: vPinyin.chineseToPinYin(province)
+                            province: params.name,
+                            provinceSpell: vPinyin.chineseToPinYin(params.name)
                         };
-                        that.title = province
+                        that.title = params.name
                     } else {
                         that.params = {
                             province: '',
