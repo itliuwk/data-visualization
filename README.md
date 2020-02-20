@@ -1,4 +1,4 @@
-# data-visualization 
+# data-visualization
 
 ## Project setup
 ```
